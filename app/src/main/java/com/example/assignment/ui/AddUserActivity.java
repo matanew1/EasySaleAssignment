@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,12 +20,17 @@ import com.example.assignment.utils.ImageLoader;
 import com.example.assignment.utils.ImagePickerHelper;
 import com.example.assignment.utils.ValidationHelper;
 import com.example.assignment.viewmodel.UserViewModel;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class AddUserActivity extends AppCompatActivity {
 
     private ImageView avatarImageView;
     private Uri imageUri;
     private UserViewModel userViewModel;
+
+    private TextInputLayout firstNameLayout;
+    private TextInputLayout lastNameLayout;
+    private TextInputLayout emailLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,10 @@ public class AddUserActivity extends AppCompatActivity {
         Button submitButton = findViewById(R.id.btn_submit);
         avatarImageView = findViewById(R.id.avatar_image);
 
+        firstNameLayout = findViewById(R.id.first_name_layout);
+        lastNameLayout = findViewById(R.id.last_name_layout);
+        emailLayout = findViewById(R.id.email_layout);
+
         // Initialize UserViewModel
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
@@ -49,7 +59,27 @@ public class AddUserActivity extends AppCompatActivity {
             String lastName = lastNameEditText.getText().toString();
             String email = emailEditText.getText().toString();
 
-            if (ValidationHelper.validateInputs(this, firstName, lastName, email)) {
+            // Reset errors
+            firstNameLayout.setError(null);
+            lastNameLayout.setError(null);
+            emailLayout.setError(null);
+
+            boolean isValid = true;
+
+            if (!ValidationHelper.validateFirstName(this, firstName)) {
+                firstNameLayout.setError("First name is required");
+                isValid = false;
+            }
+            if (!ValidationHelper.validateLastName(this, lastName)) {
+                lastNameLayout.setError("Last name is required");
+                isValid = false;
+            }
+            if (!ValidationHelper.validateEmail(this, email)) {
+                emailLayout.setError("Valid email is required");
+                isValid = false;
+            }
+
+            if (isValid) {
                 UserEntity user = new UserEntity();
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
@@ -79,7 +109,7 @@ public class AddUserActivity extends AppCompatActivity {
             imageUri = ImagePickerHelper.getImageUri(data);
             Bitmap bitmap = ImageLoader.loadBitmapFromUri(this, imageUri);
             if (bitmap != null) {
-                avatarImageView.setImageBitmap(bitmap);
+                ImageLoader.loadImage(this, imageUri, avatarImageView);
             } else {
                 Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
             }
