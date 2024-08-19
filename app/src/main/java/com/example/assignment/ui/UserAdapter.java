@@ -1,5 +1,6 @@
 package com.example.assignment.ui;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         return new UserViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         UserEntity currentUser = users.get(position);
@@ -41,12 +43,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         return users.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setUsers(List<UserEntity> users) {
         this.users = users;
         notifyDataSetChanged();
     }
 
-    class UserViewHolder extends RecyclerView.ViewHolder {
+    public class UserViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewName;
         private TextView textViewEmail;
         private ImageView imageViewAvatar;

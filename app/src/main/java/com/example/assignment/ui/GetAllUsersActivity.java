@@ -11,6 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.assignment.R;
 import com.example.assignment.viewmodel.UserViewModel;
 
+
+/**
+ * TODO: add pagination
+ * TODO: add update user
+ * TODO: add remove users
+ */
+
+
 // MainActivity class that serves as the entry point for the application
 public class GetAllUsersActivity extends AppCompatActivity {
     // Declaration of the UserViewModel instance
