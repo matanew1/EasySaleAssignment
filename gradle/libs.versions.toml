@@ -13,6 +13,7 @@ constraintlayout = "2.1.4"
 materialVersion = "1.9.0"
 recyclerview = "1.3.2"
 roomRuntime = "2.6.1"
+fragment = "1.8.2"
 
 [libraries]
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
@@ -32,6 +33,7 @@ recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "r
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "converterGson" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

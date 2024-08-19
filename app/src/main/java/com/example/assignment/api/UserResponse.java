@@ -1,17 +1,17 @@
 package com.example.assignment.api;
 
-import com.example.assignment.User;
+import com.example.assignment.db.UserEntity;
 
 import java.util.List;
 
 public class UserResponse {
-    private List<User> data;
+    private List<UserEntity> data;
 
-    public List<User> getData() {
+    public List<UserEntity> getData() {
         return data;
     }
 
-    public void setData(List<User> data) {
+    public void setData(List<UserEntity> data) {
         this.data = data;
     }
 }

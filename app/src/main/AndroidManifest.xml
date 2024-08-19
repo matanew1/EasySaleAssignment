@@ -12,15 +12,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Assignment"
         tools:targetApi="31">
+
+        <!-- Main activity that launches the app -->
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.GetAllUsersActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Activity to add a user -->
+        <activity
+            android:name=".ui.AddUserActivity"
+            android:exported="true" />
+
+        <!-- Other activities can be added here -->
+
     </application>
 
     <!-- Permissions for network access -->
@@ -28,5 +37,9 @@
         tools:ignore="ManifestOrder" />
     <!-- Permission to access network state (optional but useful for network operations) -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
 
 </manifest>

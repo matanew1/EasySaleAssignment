@@ -5,7 +5,6 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
-import com.example.assignment.User;
 import com.example.assignment.api.ApiClient;
 import com.example.assignment.api.ApiService;
 import com.example.assignment.api.UserResponse;
@@ -68,7 +67,7 @@ public class UserRepository {
                 // If the response is successful and contains a body
                 if (response.isSuccessful() && response.body() != null) {
                     // Loop through each user in the response data
-                    for (User user : response.body().getData()) {
+                    for (UserEntity user : response.body().getData()) {
                         // Convert the API user model to a database entity
                         UserEntity userEntity = new UserEntity();
                         userEntity.setId(user.getId());

@@ -2,6 +2,9 @@ package com.example.assignment.ui;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,7 +12,7 @@ import com.example.assignment.R;
 import com.example.assignment.viewmodel.UserViewModel;
 
 // MainActivity class that serves as the entry point for the application
-public class MainActivity extends AppCompatActivity {
+public class GetAllUsersActivity extends AppCompatActivity {
     // Declaration of the UserViewModel instance
     private UserViewModel userViewModel;
 
@@ -18,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Set the activity's layout using activity_main.xml
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_get_all_users);
 
         // Initialize the RecyclerView component from the layout
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
@@ -40,6 +43,16 @@ public class MainActivity extends AppCompatActivity {
         // Fetch user data from the API, specifying the page number (in this case, 1)
         userViewModel.fetchUsersFromApi(1);
 
-        // Additional CRUD (Create, Read, Update, Delete) operations can be implemented here if needed
+        // Load the MenuFragment
+        if (savedInstanceState == null) {
+            loadFragment(new MenuFragment());
+        }
+    }
+
+    private void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.action_menu_view, fragment);
+        fragmentTransaction.commit();
     }
 }
