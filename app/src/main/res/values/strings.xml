@@ -8,4 +8,6 @@
     <string name="email">Email</string>
     <string name="last_name">Last Name</string>
     <string name="first_name">First Name</string>
+    <string name="upload_an_avatar">Upload an avatar</string>
+    <string name="upload">Upload</string>
 </resources>

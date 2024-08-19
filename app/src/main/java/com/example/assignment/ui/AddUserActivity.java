@@ -8,6 +8,8 @@ import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -27,10 +29,11 @@ public class AddUserActivity extends AppCompatActivity {
     private ImageView avatarImageView;
     private Uri imageUri;
     private UserViewModel userViewModel;
-
+    private TextView uploadTextView;
     private TextInputLayout firstNameLayout;
     private TextInputLayout lastNameLayout;
     private TextInputLayout emailLayout;
+    private ProgressBar imageLoadingProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,8 @@ public class AddUserActivity extends AppCompatActivity {
         EditText emailEditText = findViewById(R.id.email_et);
         Button submitButton = findViewById(R.id.btn_submit);
         avatarImageView = findViewById(R.id.avatar_image);
+        uploadTextView = findViewById(R.id.upload_text);
+        imageLoadingProgress = findViewById(R.id.image_loading_progress);
 
         firstNameLayout = findViewById(R.id.first_name_layout);
         lastNameLayout = findViewById(R.id.last_name_layout);
@@ -106,13 +111,17 @@ public class AddUserActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == ImagePickerHelper.PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+            imageLoadingProgress.setVisibility(ProgressBar.VISIBLE);
             imageUri = ImagePickerHelper.getImageUri(data);
             Bitmap bitmap = ImageLoader.loadBitmapFromUri(this, imageUri);
             if (bitmap != null) {
+                avatarImageView.setImageBitmap(bitmap);
+                uploadTextView.setVisibility(TextView.GONE); // Hide the hint text
                 ImageLoader.loadImage(this, imageUri, avatarImageView);
             } else {
                 Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
             }
+            imageLoadingProgress.setVisibility(ProgressBar.GONE);
         }
     }
 }
