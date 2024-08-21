@@ -13,17 +13,19 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.assignment.R;
 import com.example.assignment.db.UserEntity;
+import com.example.assignment.utils.ILoadFragment;
 import com.example.assignment.utils.ImageLoader;
 import com.example.assignment.utils.ImagePickerHelper;
 import com.example.assignment.utils.ValidationHelper;
 import com.example.assignment.viewmodel.UserViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class AddUserActivity extends AppCompatActivity {
+public class AddUserActivity extends AppCompatActivity implements ILoadFragment {
 
     private ImageView avatarImageView;
     private Uri imageUri;
@@ -98,6 +100,10 @@ public class AddUserActivity extends AppCompatActivity {
                 finish(); // Close the activity
             }
         });
+
+        if (savedInstanceState == null) {
+            loadFragment(new MenuFragment());
+        }
     }
 
     private void openImagePicker() {
@@ -121,5 +127,12 @@ public class AddUserActivity extends AppCompatActivity {
             }
             imageLoadingProgress.setVisibility(ProgressBar.GONE);
         }
+    }
+
+    @Override
+    public void loadFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.action_menu_view, fragment)
+                .commit();
     }
 }
