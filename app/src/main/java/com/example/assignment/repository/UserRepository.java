@@ -56,6 +56,7 @@ public class UserRepository {
         // Runs the delete operation in a background thread
         new Thread(() -> userDao.delete(user)).start();
     }
+
     public interface ApiCallback {
         void onResult(boolean hasData);
     }

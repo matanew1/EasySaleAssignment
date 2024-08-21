@@ -12,6 +12,8 @@ import com.example.assignment.db.UserEntity;
 import com.example.assignment.utils.ILoadFragment;
 import com.example.assignment.viewmodel.UserViewModel;
 
+import java.util.ArrayList;
+
 
 //TODO: PAGINATION !!! + fix create new
 public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragment {
@@ -32,15 +34,13 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         userViewModel.getAllUsers().observe(this, users -> {
-            if (users != null) {
+            if (users != null && !users.isEmpty()) {
                 adapter.setUsers(users);
+            } else {
+                adapter.setUsers(new ArrayList<>());
+                userViewModel.fetchUsersFromApi();
             }
         });
-
-        // Check if data is already in DB and fetch if not
-        if (!userViewModel.hasDataInDB()) {
-            userViewModel.fetchUsersFromApi();
-        }
 
         if (savedInstanceState == null) {
             loadFragment(new MenuFragment());

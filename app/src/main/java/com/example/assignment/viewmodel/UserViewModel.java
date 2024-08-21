@@ -57,8 +57,4 @@ public class UserViewModel extends AndroidViewModel {
         });
     }
 
-    public boolean hasDataInDB() {
-        // Add implementation to check if the database has data
-        return allUsers.getValue() != null && !allUsers.getValue().isEmpty();
-    }
 }
