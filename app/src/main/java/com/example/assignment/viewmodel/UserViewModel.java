@@ -1,7 +1,6 @@
 package com.example.assignment.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -46,7 +45,7 @@ public class UserViewModel extends AndroidViewModel {
     }
 
     // Method to delete a user from the database
-    public void delete(UserEntity user) {
+    public void deleteUser(UserEntity user) {
         repository.delete(user); // Call the delete method of the repository to remove the user
     }
 

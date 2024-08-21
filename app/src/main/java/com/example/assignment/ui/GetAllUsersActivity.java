@@ -2,13 +2,13 @@ package com.example.assignment.ui;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.assignment.R;
+import com.example.assignment.db.UserEntity;
 import com.example.assignment.utils.ILoadFragment;
 import com.example.assignment.viewmodel.UserViewModel;
 
@@ -45,6 +45,11 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
         if (savedInstanceState == null) {
             loadFragment(new MenuFragment());
         }
+
+        adapter.setDeleteListener(position -> {
+            UserEntity user = UserAdapter.users.get(position);
+            userViewModel.deleteUser(user);
+        });
     }
 
     @Override

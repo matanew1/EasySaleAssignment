@@ -10,4 +10,5 @@
     <string name="first_name">First Name</string>
     <string name="upload_an_avatar">Upload an avatar</string>
     <string name="upload">Upload</string>
+    <string name="delete_user">delete user\n</string>
 </resources>

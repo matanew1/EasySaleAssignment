@@ -18,11 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
-    private static List<UserEntity> users = new ArrayList<>();
+    static List<UserEntity> users = new ArrayList<>();
     private static OnItemClickListener listener;
+    private static OnDeleteClickListener deleteListener;
 
     public static void setListener(OnItemClickListener listener) {
         UserAdapter.listener = listener;
+    }
+
+    public void setDeleteListener(OnDeleteClickListener deleteListener) {
+        UserAdapter.deleteListener = deleteListener;
     }
 
     @NonNull
@@ -55,17 +60,28 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         notifyDataSetChanged();
     }
 
+    public void removeUser(int position) {
+        if (position >= 0 && position < users.size()) {
+            users.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, users.size());
+        }
+    }
+
     // Make UserViewHolder static if it does not access outer class members
     public static class UserViewHolder extends RecyclerView.ViewHolder {
         private final TextView textViewName;
         private final TextView textViewEmail;
         private final ImageView imageViewAvatar;
+        private final ImageView imageViewDelete;
 
         public UserViewHolder(View itemView) {
             super(itemView);
             textViewName = itemView.findViewById(R.id.text_view_name);
             textViewEmail = itemView.findViewById(R.id.text_view_email);
             imageViewAvatar = itemView.findViewById(R.id.image_view_avatar);
+            imageViewDelete = itemView.findViewById(R.id.image_view_trash);
+
 
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
@@ -73,11 +89,22 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                     listener.onItemClick(users.get(position));
                 }
             });
+
+            imageViewDelete.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (deleteListener != null && position != RecyclerView.NO_POSITION) {
+                    deleteListener.onDeleteClick(position);
+                }
+            });
         }
     }
 
     public interface OnItemClickListener {
         void onItemClick(UserEntity user);
+    }
+
+    public interface OnDeleteClickListener {
+        void onDeleteClick(int position);
     }
 
 }
