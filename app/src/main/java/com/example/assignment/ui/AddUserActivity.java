@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -94,7 +93,7 @@ public class AddUserActivity extends AppCompatActivity {
                     user.setAvatar(imageUri.toString());
                 }
 
-                userViewModel.insert(user);
+                userViewModel.addNewUser(user);
                 Toast.makeText(this, "User added successfully", Toast.LENGTH_SHORT).show();
                 finish(); // Close the activity
             }
@@ -106,6 +105,7 @@ public class AddUserActivity extends AppCompatActivity {
         startActivityForResult(intent, ImagePickerHelper.PICK_IMAGE_REQUEST);
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -113,9 +113,7 @@ public class AddUserActivity extends AppCompatActivity {
         if (requestCode == ImagePickerHelper.PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
             imageLoadingProgress.setVisibility(ProgressBar.VISIBLE);
             imageUri = ImagePickerHelper.getImageUri(data);
-            Bitmap bitmap = ImageLoader.loadBitmapFromUri(this, imageUri);
-            if (bitmap != null) {
-                avatarImageView.setImageBitmap(bitmap);
+            if (imageUri != null) {
                 uploadTextView.setVisibility(TextView.GONE); // Hide the hint text
                 ImageLoader.loadImage(this, imageUri, avatarImageView);
             } else {

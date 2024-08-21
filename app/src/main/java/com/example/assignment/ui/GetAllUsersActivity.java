@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.assignment.R;
+import com.example.assignment.utils.ILoadFragment;
 import com.example.assignment.viewmodel.UserViewModel;
 
 
@@ -20,7 +21,7 @@ import com.example.assignment.viewmodel.UserViewModel;
 
 
 // MainActivity class that serves as the entry point for the application
-public class GetAllUsersActivity extends AppCompatActivity {
+public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragment {
     // Declaration of the UserViewModel instance
     private UserViewModel userViewModel;
 
@@ -48,6 +49,7 @@ public class GetAllUsersActivity extends AppCompatActivity {
         // Observe changes in the list of users from the ViewModel and update the adapter whenever the data changes
         userViewModel.getAllUsers().observe(this, adapter::setUsers);
 
+        userViewModel.deleteAllUsers();
         // Fetch user data from the API, specifying the page number (in this case, 1)
         userViewModel.fetchUsersFromApi(1);
 
@@ -57,7 +59,8 @@ public class GetAllUsersActivity extends AppCompatActivity {
         }
     }
 
-    private void loadFragment(Fragment fragment) {
+    @Override
+    public void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.action_menu_view, fragment);

@@ -88,4 +88,8 @@ public class UserRepository {
             }
         });
     }
+
+    public void deleteAllUsers() {
+        new Thread(() -> userDao.deleteAllUsers()).start();
+    }
 }

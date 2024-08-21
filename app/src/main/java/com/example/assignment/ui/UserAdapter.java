@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.assignment.R;
 import com.example.assignment.db.UserEntity;
@@ -16,8 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
-    private List<UserEntity> users = new ArrayList<>();
-    private OnItemClickListener listener;
+    private static List<UserEntity> users = new ArrayList<>();
+    private static OnItemClickListener listener;
+
+    public static void setListener(OnItemClickListener listener) {
+        UserAdapter.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -45,14 +51,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     @SuppressLint("NotifyDataSetChanged")
     public void setUsers(List<UserEntity> users) {
-        this.users = users;
+        UserAdapter.users = users;
         notifyDataSetChanged();
     }
 
-    public class UserViewHolder extends RecyclerView.ViewHolder {
-        private TextView textViewName;
-        private TextView textViewEmail;
-        private ImageView imageViewAvatar;
+    // Make UserViewHolder static if it does not access outer class members
+    public static class UserViewHolder extends RecyclerView.ViewHolder {
+        private final TextView textViewName;
+        private final TextView textViewEmail;
+        private final ImageView imageViewAvatar;
 
         public UserViewHolder(View itemView) {
             super(itemView);
@@ -73,7 +80,4 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         void onItemClick(UserEntity user);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
 }

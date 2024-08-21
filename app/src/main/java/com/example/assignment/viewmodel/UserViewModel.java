@@ -28,8 +28,12 @@ public class UserViewModel extends AndroidViewModel {
         return allUsers; // Return the LiveData object
     }
 
+    public void deleteAllUsers() {
+        repository.deleteAllUsers();
+    }
+
     // Method to insert a new user into the database
-    public void insert(UserEntity user) {
+    public void addNewUser(UserEntity user) {
         repository.insert(user); // Call the insert method of the repository to add a new user
     }
 

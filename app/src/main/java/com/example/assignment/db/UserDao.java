@@ -29,4 +29,7 @@ public interface UserDao {
     // Query to retrieve all users from the user_table, ordered by their ID in ascending order
     @Query("SELECT * FROM user_table ORDER BY id ASC")
     LiveData<List<UserEntity>> getAllUsers(); // Returns a LiveData object containing a list of all UserEntity objects
+
+    @Query("DELETE FROM user_table")
+    void deleteAllUsers();
 }
