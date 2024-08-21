@@ -1,6 +1,8 @@
 package com.example.assignment.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -15,6 +17,7 @@ public class UserViewModel extends AndroidViewModel {
     private UserRepository repository;
     // LiveData holding a list of UserEntity objects representing all users
     private LiveData<List<UserEntity>> allUsers;
+    private int currentPage = 1;
 
     // Constructor for the UserViewModel
     public UserViewModel(@NonNull Application application) {
@@ -47,8 +50,16 @@ public class UserViewModel extends AndroidViewModel {
         repository.delete(user); // Call the delete method of the repository to remove the user
     }
 
-    // Method to fetch users from the API
-    public void fetchUsersFromApi(int page) {
-        repository.fetchUsersFromApi(page); // Call the fetchUsersFromApi method of the repository with a page number
+    public void fetchUsersFromApi() {
+        repository.fetchUsersFromApi(currentPage, hasData -> {
+            if (hasData) {
+                currentPage++;
+            }
+        });
+    }
+
+    public boolean hasDataInDB() {
+        // Add implementation to check if the database has data
+        return allUsers.getValue() != null && !allUsers.getValue().isEmpty();
     }
 }

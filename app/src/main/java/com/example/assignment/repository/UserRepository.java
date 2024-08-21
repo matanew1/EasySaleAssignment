@@ -56,35 +56,33 @@ public class UserRepository {
         // Runs the delete operation in a background thread
         new Thread(() -> userDao.delete(user)).start();
     }
+    public interface ApiCallback {
+        void onResult(boolean hasData);
+    }
 
     // Method to fetch users from the API
-    public void fetchUsersFromApi(int page) {
-        // Makes an asynchronous network request to fetch users
+    public void fetchUsersFromApi(int page, ApiCallback callback) {
         apiService.getUsers(page).enqueue(new Callback<UserResponse>() {
-            // Called when the API response is received
             @Override
             public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
-                // If the response is successful and contains a body
                 if (response.isSuccessful() && response.body() != null) {
-                    // Loop through each user in the response data
-                    for (UserEntity user : response.body().getData()) {
-                        // Convert the API user model to a database entity
-                        UserEntity userEntity = new UserEntity();
-                        userEntity.setId(user.getId());
-                        userEntity.setFirstName(user.getFirstName());
-                        userEntity.setLastName(user.getLastName());
-                        userEntity.setEmail(user.getEmail());
-                        userEntity.setAvatar(user.getAvatar());
-                        // Insert the user entity into the local database
-                        insert(userEntity);
+                    List<UserEntity> users = response.body().getData();
+                    if (users != null && !users.isEmpty()) {
+                        for (UserEntity user : users) {
+                            insert(user);
+                        }
+                        callback.onResult(true);
+                    } else {
+                        callback.onResult(false);
                     }
+                } else {
+                    callback.onResult(false);
                 }
             }
 
-            // Called if the API request fails
             @Override
-            public void onFailure(@NonNull Call<UserResponse> call, Throwable t) {
-                // Handle API error (e.g., log the error or show a message to the user)
+            public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
+                callback.onResult(false);
             }
         });
     }
