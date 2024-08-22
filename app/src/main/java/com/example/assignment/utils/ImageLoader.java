@@ -11,10 +11,4 @@ public class ImageLoader {
                 .load(uri)
                 .into(imageView);
     }
-
-    public static void loadImage(Context context, String url, ImageView imageView) {
-        Glide.with(context)
-                .load(url)
-                .into(imageView);
-    }
 }

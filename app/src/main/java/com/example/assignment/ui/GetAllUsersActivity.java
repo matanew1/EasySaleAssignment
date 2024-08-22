@@ -33,6 +33,7 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
         recyclerView.setAdapter(adapter);
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+//        userViewModel.deleteAllUsers();
         userViewModel.getAllUsers().observe(this, users -> {
             if (users != null && !users.isEmpty()) {
                 adapter.setUsers(users);

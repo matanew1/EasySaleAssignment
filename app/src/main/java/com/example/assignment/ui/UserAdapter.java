@@ -1,6 +1,7 @@
 package com.example.assignment.ui;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,9 +45,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         UserEntity currentUser = users.get(position);
         holder.textViewName.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
         holder.textViewEmail.setText(currentUser.getEmail());
-        Glide.with(holder.imageViewAvatar.getContext())
-                .load(currentUser.getAvatar())
-                .into(holder.imageViewAvatar);
+        try {
+            Glide.with(holder.imageViewAvatar.getContext())
+                    .load(currentUser.getAvatar())
+                    .into(holder.imageViewAvatar);
+        } catch (Exception e) {
+            Log.e("Glide", "Error loading image: "+e.getMessage());
+        }
     }
 
     @Override
@@ -58,14 +63,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public void setUsers(List<UserEntity> users) {
         UserAdapter.users = users;
         notifyDataSetChanged();
-    }
-
-    public void removeUser(int position) {
-        if (position >= 0 && position < users.size()) {
-            users.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, users.size());
-        }
     }
 
     // Make UserViewHolder static if it does not access outer class members

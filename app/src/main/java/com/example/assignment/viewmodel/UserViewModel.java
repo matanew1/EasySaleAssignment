@@ -53,6 +53,7 @@ public class UserViewModel extends AndroidViewModel {
         repository.fetchUsersFromApi(currentPage, hasData -> {
             if (hasData) {
                 currentPage++;
+                fetchUsersFromApi();
             }
         });
     }

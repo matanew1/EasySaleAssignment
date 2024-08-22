@@ -39,13 +39,11 @@
     </application>
 
     <!-- Permissions for network access -->
-    <uses-permission android:name="android.permission.INTERNET"
-        tools:ignore="ManifestOrder" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <!-- Permission to access network state (optional but useful for network operations) -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
 
 </manifest>

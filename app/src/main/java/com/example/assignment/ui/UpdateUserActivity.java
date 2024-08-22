@@ -1,7 +1,7 @@
 package com.example.assignment.ui;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -32,9 +32,6 @@ import com.example.assignment.utils.ValidationHelper;
 import com.example.assignment.viewmodel.UserViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,7 +56,7 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
         initializeViews();
         setupViewModel();
         populateUserSpinner();
-        setSpinnerListeners();
+        setListeners();
 
         if (savedInstanceState == null) {
             loadFragment(new MenuFragment());
@@ -97,7 +94,7 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
         userSpinner.setAdapter(adapter);
     }
 
-    private void setSpinnerListeners() {
+    private void setListeners() {
         userSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -124,7 +121,8 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
                 // Handle no item selected
             }
         });
-        avatarImageView.setOnClickListener(v -> openImagePicker());
+
+        avatarImageView.setOnClickListener(v -> ImagePickerHelper.openImagePicker(this, (ImagePickerHelper.ImageSelectionListener) this));
 
         Button submitButton = findViewById(R.id.btn_submit);
         submitButton.setOnClickListener(v -> validateAndSubmitUser());
@@ -132,11 +130,10 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
 
     private void updateUserUI(@NonNull UserEntity user) {
         if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {
-                // It's a web URL, use Glide or any other image loading library
+            // Load image with Glide (can also use ImageLoader if preferred)
             Glide.with(this)
                     .load(user.getAvatar())
                     .into(avatarImageView);
-
         }
 
         // Set other fields
@@ -200,7 +197,7 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
                 selectedUser.setAvatar(imageUri.toString());
             }
             userViewModel.updateUser(selectedUser);
-            Toast.makeText(this, "User added successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "User updated successfully", Toast.LENGTH_SHORT).show();
             finish(); // Close the activity
         }
     }
@@ -231,7 +228,6 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
 
         return isValid;
     }
-
 
     @Override
     public void loadFragment(Fragment fragment) {

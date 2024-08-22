@@ -1,8 +1,12 @@
 package com.example.assignment.ui;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,7 +29,7 @@ import com.example.assignment.utils.ValidationHelper;
 import com.example.assignment.viewmodel.UserViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class AddUserActivity extends AppCompatActivity implements ILoadFragment {
+public class AddUserActivity extends AppCompatActivity implements ILoadFragment, ImagePickerHelper.ImageSelectionListener {
 
     private ImageView avatarImageView;
     private Uri imageUri;
@@ -64,15 +68,10 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment 
     }
 
     private void setupListeners() {
-        avatarImageView.setOnClickListener(v -> openImagePicker());
+        avatarImageView.setOnClickListener(v -> ImagePickerHelper.openImagePicker(this, this));
 
         Button submitButton = findViewById(R.id.btn_submit);
         submitButton.setOnClickListener(v -> validateAndSubmitUser());
-    }
-
-    private void openImagePicker() {
-        Intent intent = ImagePickerHelper.createImagePickerIntent();
-        startActivityForResult(intent, ImagePickerHelper.PICK_IMAGE_REQUEST);
     }
 
     @Override
@@ -80,32 +79,36 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment 
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == ImagePickerHelper.PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
-            handleImageResult(data);
+            ImagePickerHelper.handleImageResult(this, data, this);
         }
     }
 
-    private void handleImageResult(@Nullable Intent data) {
+    @Override
+    public void onImageSelected(@NonNull Uri imageUri) {
         imageLoadingProgress.setVisibility(ProgressBar.VISIBLE);
-        imageUri = ImagePickerHelper.getImageUri(data);
-
-        if (imageUri != null) {
-            uploadTextView.setVisibility(TextView.GONE); // Hide the hint text
-            ImageLoader.loadImage(this, imageUri, avatarImageView);
-        } else {
-            Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
-        }
-
+        this.imageUri = imageUri;
+        ImageLoader.loadImage(this, imageUri, avatarImageView);
+        uploadTextView.setVisibility(TextView.GONE);
         imageLoadingProgress.setVisibility(ProgressBar.GONE);
     }
 
-    private void validateAndSubmitUser() {
-        EditText firstNameEditText = findViewById(R.id.first_name_et);
-        EditText lastNameEditText = findViewById(R.id.last_name_et);
-        EditText emailEditText = findViewById(R.id.email_et);
+    @Override
+    public void onImageUrlEntered(@NonNull String imageUrl) {
+        if (!imageUrl.isEmpty() && Patterns.WEB_URL.matcher(imageUrl).matches()) {
+            imageLoadingProgress.setVisibility(ProgressBar.VISIBLE);
+            imageUri = Uri.parse(imageUrl);
+            ImageLoader.loadImage(this, imageUri, avatarImageView);
+            uploadTextView.setVisibility(TextView.GONE);
+            imageLoadingProgress.setVisibility(ProgressBar.GONE);
+        } else {
+            Toast.makeText(this, "Invalid URL", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-        String firstName = firstNameEditText.getText().toString();
-        String lastName = lastNameEditText.getText().toString();
-        String email = emailEditText.getText().toString();
+    private void validateAndSubmitUser() {
+        String firstName = ((EditText) findViewById(R.id.first_name_et)).getText().toString();
+        String lastName = ((EditText) findViewById(R.id.last_name_et)).getText().toString();
+        String email = ((EditText) findViewById(R.id.email_et)).getText().toString();
 
         clearErrors();
 
