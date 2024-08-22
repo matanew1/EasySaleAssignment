@@ -11,4 +11,6 @@
     <string name="upload_an_avatar">Upload an avatar</string>
     <string name="upload">Upload</string>
     <string name="delete_user">delete user\n</string>
+    <string name="update_user">Update user</string>
+    <string name="replace_an_avatar">Replace an avatar</string>
 </resources>

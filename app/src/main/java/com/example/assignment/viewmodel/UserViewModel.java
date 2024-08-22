@@ -40,7 +40,7 @@ public class UserViewModel extends AndroidViewModel {
     }
 
     // Method to update an existing user's details in the database
-    public void update(UserEntity user) {
+    public void updateUser(UserEntity user) {
         repository.update(user); // Call the update method of the repository to modify user details
     }
 

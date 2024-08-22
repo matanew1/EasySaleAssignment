@@ -31,10 +31,12 @@ public class MenuFragment extends Fragment {
         // Initialize UI components
         Button addUserButton = view.findViewById(R.id.btn_add_user);
         Button getAllUsersButton = view.findViewById(R.id.btn_get_all_users);
+        Button updateUserButton = view.findViewById(R.id.btn_update_user);
 
         // Set click listeners
         addUserButton.setOnClickListener(v -> switchScreen(AddUserActivity.class));
         getAllUsersButton.setOnClickListener(v -> switchScreen(GetAllUsersActivity.class));
+        updateUserButton.setOnClickListener(v -> switchScreen(UpdateUserActivity.class));
     }
 
     /**

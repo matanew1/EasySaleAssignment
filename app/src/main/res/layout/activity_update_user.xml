@@ -5,20 +5,34 @@
     android:orientation="vertical"
     android:background="@color/colorBackground">
 
-    <TextView
-        android:id="@+id/title_text"
+    <LinearLayout
+        android:id="@+id/dropdown_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_user"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        android:gravity="center"
-        android:padding="8dp"/>
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/update_user"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:padding="8dp"/>
+
+        <Spinner
+            android:id="@+id/user_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"/>
+
+    </LinearLayout>
 
     <!-- Avatar ImageView -->
     <FrameLayout
         android:id="@+id/avatar_frame"
-        android:layout_below="@+id/title_text"
+        android:layout_below="@+id/dropdown_menu"
         android:layout_width="match_parent"
         android:layout_height="280dp"
         android:layout_marginBottom="16dp">
@@ -35,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/upload_an_avatar"
+            android:text="@string/replace_an_avatar"
             android:textColor="@android:color/white"
             android:background="@android:color/black"
             android:padding="8dp"/>
@@ -104,7 +118,7 @@
             android:layout_below="@id/email_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/add_user"
+            android:text="@string/update_user"
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
             android:padding="16dp"/>

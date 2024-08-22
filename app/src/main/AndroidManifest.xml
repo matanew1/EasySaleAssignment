@@ -28,6 +28,12 @@
             android:name=".ui.AddUserActivity"
             android:exported="true" />
 
+
+        <!-- Activity to update a user -->
+        <activity
+            android:name=".ui.UpdateUserActivity"
+            android:exported="true" />
+
         <!-- Other activities can be added here -->
 
     </application>
