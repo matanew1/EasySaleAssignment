@@ -1,6 +1,7 @@
 package com.example.assignment.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -53,7 +54,6 @@ public class UserViewModel extends AndroidViewModel {
         repository.fetchUsersFromApi(currentPage, hasData -> {
             if (hasData) {
                 currentPage++;
-                fetchUsersFromApi();
             }
         });
     }

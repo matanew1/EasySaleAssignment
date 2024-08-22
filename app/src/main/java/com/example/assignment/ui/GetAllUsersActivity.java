@@ -2,6 +2,7 @@ package com.example.assignment.ui;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,7 +16,6 @@ import com.example.assignment.viewmodel.UserViewModel;
 import java.util.ArrayList;
 
 
-//TODO: PAGINATION !!! + fix create new
 public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragment {
     private UserViewModel userViewModel;
 
@@ -43,6 +43,16 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
             }
         });
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(1)) {
+                    userViewModel.fetchUsersFromApi();
+                }
+            }
+        });
+
         if (savedInstanceState == null) {
             loadFragment(new MenuFragment());
         }
@@ -60,3 +70,4 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
                 .commit();
     }
 }
+
