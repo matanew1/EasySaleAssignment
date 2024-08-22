@@ -3,41 +3,66 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/colorAccent"
+    android:background="@color/colorMenuBackground"
     android:padding="16dp">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_add_user"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/add_user"
-        android:textColor="@color/colorButtonText"
-        android:padding="16dp"
-        android:layout_margin="8dp"
-        app:cornerRadius="8dp"
-        app:backgroundTint="@color/colorButtonBackground" />
+        android:layout_weight="1"
+        android:layout_margin="4dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_get_all_users"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/get_all_users"
-        android:textColor="@color/colorButtonText"
-        android:padding="16dp"
-        android:layout_margin="8dp"
-        app:cornerRadius="8dp"
-        app:backgroundTint="@color/colorButtonBackground" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_add_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_user"
+            android:textColor="@color/colorButtonText"
+            android:padding="16dp"
+            app:cornerRadius="8dp"
+            app:backgroundTint="@color/colorButtonBackground" />
+    </androidx.cardview.widget.CardView>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_update_user"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/update_user"
-        android:textColor="@color/colorButtonText"
-        android:padding="16dp"
-        android:layout_margin="8dp"
-        app:cornerRadius="8dp"
-        app:backgroundTint="@color/colorButtonBackground" />
+        android:layout_weight="1"
+        android:layout_margin="4dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_get_all_users"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/get_all_users"
+            android:textColor="@color/colorButtonText"
+            android:padding="16dp"
+            app:cornerRadius="8dp"
+            app:backgroundTint="@color/colorButtonBackground" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="4dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_update_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/update_user"
+            android:textColor="@color/colorButtonText"
+            android:padding="16dp"
+            app:cornerRadius="8dp"
+            app:backgroundTint="@color/colorButtonBackground" />
+    </androidx.cardview.widget.CardView>
+
 </LinearLayout>

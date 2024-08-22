@@ -1,6 +1,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
@@ -31,11 +32,26 @@
             android:orientation="vertical"
             android:padding="8dp">
 
+            <!-- Title above Spinner -->
+            <TextView
+                android:id="@+id/choose_user_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Choose User"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp"
+                android:padding="4dp"
+                tools:ignore="HardcodedText" />
+
             <Spinner
                 android:id="@+id/user_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"/>
+                android:spinnerMode="dropdown"
+                android:padding="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
         </LinearLayout>
 
         <!-- Avatar ImageView -->
@@ -142,7 +158,9 @@
                 android:layout_marginTop="16dp"
                 app:cornerRadius="12dp"
                 app:backgroundTint="@color/colorPrimary"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white"
+                android:padding="16dp"
+                android:layout_margin="16dp"/>
         </LinearLayout>
 
         <!-- Action Menu -->

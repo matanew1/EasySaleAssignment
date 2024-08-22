@@ -4,6 +4,9 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryVariant">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="colorSecondary">#03DAC5</color>
+    <color name="colorSecondaryVariant">#03DAC5</color>
+    <color name="colorMenuBackground">#FFFFFF</color>"
 
     <!-- Background Colors -->
     <color name="colorBackground">#FFFFFF</color>
@@ -12,7 +15,7 @@
     <color name="colorText">#000000</color>
 
     <!-- Additional Colors -->
-    <color name="colorButtonBackground">#6200EE</color>
+    <color name="colorButtonBackground">#655181</color>
     <color name="colorButtonText">#FFFFFF</color>
 
     <!-- Hint Color -->
