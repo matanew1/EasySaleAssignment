@@ -65,6 +65,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         notifyDataSetChanged();
     }
 
+    public UserEntity getUserAtPosition(int position) {
+        return users.get(position);
+    }
+
     // Make UserViewHolder static if it does not access outer class members
     public static class UserViewHolder extends RecyclerView.ViewHolder {
         private final TextView textViewName;

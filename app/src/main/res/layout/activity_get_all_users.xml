@@ -6,14 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".ui.GetAllUsersActivity">
 
+    <!-- Title -->
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="8dp"
+        android:text="@string/get_all_users"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:gravity="center"/>
+
+    <!-- Search Bar -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_text"
+        android:layout_margin="8dp"
+        android:hint="@string/search_hint">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/search_hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/search_layout"
         android:layout_above="@id/action_menu_view"
         android:layout_margin="8dp"
         tools:listitem="@layout/user_item" />
 
+    <!-- Action Menu -->
     <FrameLayout
         android:id="@+id/action_menu_view"
         android:layout_width="match_parent"
