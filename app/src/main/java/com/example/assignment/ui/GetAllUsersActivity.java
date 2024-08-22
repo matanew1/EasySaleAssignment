@@ -113,11 +113,4 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
                 .replace(R.id.action_menu_view, fragment)
                 .commit();
     }
-
-    @Override
-    public void finish() {
-        super.finish();
-        // Apply the reverse page flip animation
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_right);
-    }
 }

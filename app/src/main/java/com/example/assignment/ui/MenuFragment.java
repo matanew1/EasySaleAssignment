@@ -47,12 +47,17 @@ public class MenuFragment extends Fragment {
      */
     private void switchScreen(Class<? extends Activity> target) {
         Intent intent = new Intent(getActivity(), target);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // Start the activity in a new task
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Clear activities on top of the specified activity
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY); // Do not save the activity in the history stack
+
         // Create custom transition animations
         Bundle options = ActivityOptions.makeCustomAnimation(
                 getContext(),
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
+                R.anim.fade_in,
+                R.anim.fade_out
         ).toBundle();
         startActivity(intent, options);
     }
+
 }
