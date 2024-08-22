@@ -1,6 +1,7 @@
 package com.example.assignment.ui;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -31,6 +32,9 @@ import com.example.assignment.utils.ValidationHelper;
 import com.example.assignment.viewmodel.UserViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -128,11 +132,11 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
 
     private void updateUserUI(@NonNull UserEntity user) {
         if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {
-            Uri avatarUri = Uri.parse(user.getAvatar());
-            avatarImageView.setImageURI(avatarUri);
-            Glide.with(UpdateUserActivity.this)
-                    .load(avatarUri)
+                // It's a web URL, use Glide or any other image loading library
+            Glide.with(this)
+                    .load(user.getAvatar())
                     .into(avatarImageView);
+
         }
 
         // Set other fields
@@ -226,20 +230,6 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
         }
 
         return isValid;
-    }
-
-    @NonNull
-    private UserEntity createUserEntity(String firstName, String lastName, String email) {
-        UserEntity user = new UserEntity();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-
-        if (imageUri != null) {
-            user.setAvatar(imageUri.toString());
-        }
-
-        return user;
     }
 
 
