@@ -3,7 +3,6 @@ package com.example.assignment.ui;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,14 +31,16 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_all_users);
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
+        initializeViewModel();
+        setupRecyclerView();
+        setupSearch();
 
-        adapter = new UserAdapter();
-        recyclerView.setAdapter(adapter);
+        if (savedInstanceState == null) {
+            loadFragment(new MenuFragment());
+        }
+    }
 
+    private void initializeViewModel() {
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         userViewModel.getAllUsers().observe(this, users -> {
             if (users != null) {
@@ -50,6 +51,16 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
                 }
             }
         });
+    }
+
+    private void setupRecyclerView() {
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+
+        adapter = new UserAdapter();
+        recyclerView.setAdapter(adapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -61,16 +72,14 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
             }
         });
 
-        if (savedInstanceState == null) {
-            loadFragment(new MenuFragment());
-        }
+        setupAdapterListener();
+    }
 
+    private void setupAdapterListener() {
         adapter.setDeleteListener(position -> {
             UserEntity user = adapter.getUserAtPosition(position);
             userViewModel.deleteUser(user);
         });
-
-        setupSearch();
     }
 
     private void setupSearch() {
