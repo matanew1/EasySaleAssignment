@@ -1,6 +1,7 @@
 package com.example.assignment.ui;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -40,12 +41,18 @@ public class MenuFragment extends Fragment {
     }
 
     /**
-     * Switches to the specified activity.
+     * Switches to the specified activity with a custom transition animation.
      *
      * @param target The activity class to switch to.
      */
     private void switchScreen(Class<? extends Activity> target) {
         Intent intent = new Intent(getActivity(), target);
-        startActivity(intent);
+        // Create custom transition animations
+        Bundle options = ActivityOptions.makeCustomAnimation(
+                getContext(),
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+        ).toBundle();
+        startActivity(intent, options);
     }
 }
