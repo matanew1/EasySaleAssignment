@@ -50,4 +50,5 @@ dependencies {
     annotationProcessor(libs.room.compiler)
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
+    implementation(libs.lottie)
 }
