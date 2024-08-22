@@ -173,7 +173,7 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
         boolean isValid = validateInput(firstName, lastName, email);
 
         if (isValid) {
-            updateUserEntity(firstName, lastName, email);
+            updateUserEntity(firstName, lastName, email, imageUri.toString());
             userViewModel.updateUser(selectedUser);
             Toast.makeText(this, "User updated successfully", Toast.LENGTH_SHORT).show();
             finish(); // Close the activity
@@ -212,13 +212,11 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
         return isValid;
     }
 
-    private void updateUserEntity(String firstName, String lastName, String email) {
+    private void updateUserEntity(String firstName, String lastName, String email, String avatarUrl) {
         selectedUser.setFirstName(firstName);
         selectedUser.setLastName(lastName);
         selectedUser.setEmail(email);
-        if (imageUri != null) {
-            selectedUser.setAvatar(imageUri.toString());
-        }
+        selectedUser.setAvatar(avatarUrl);
     }
 
     @Override

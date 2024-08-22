@@ -14,4 +14,8 @@
     <!-- Additional Colors -->
     <color name="colorButtonBackground">#6200EE</color>
     <color name="colorButtonText">#FFFFFF</color>
+
+    <!-- Hint Color -->
+    <color name="colorHint">#9E9E9E</color>
+
 </resources>
