@@ -107,6 +107,9 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
 
         Button submitButton = findViewById(R.id.btn_submit);
         submitButton.setOnClickListener(v -> validateAndSubmitUser());
+
+        Button cancelButton = findViewById(R.id.btn_cancel);
+        cancelButton.setOnClickListener(v -> finish());
     }
 
     private void onUserSelected(int position) {

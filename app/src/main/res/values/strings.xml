@@ -15,4 +15,5 @@
     <string name="replace_an_avatar">Replace an avatar</string>
     <string name="image_avatar">avatar\n</string>
     <string name="search_hint">Search a user...</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -69,6 +69,9 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
 
         Button submitButton = findViewById(R.id.btn_submit);
         submitButton.setOnClickListener(v -> validateAndSubmitUser());
+
+        Button cancelButton = findViewById(R.id.btn_cancel);
+        cancelButton.setOnClickListener(v -> finish());
     }
 
     @Override
