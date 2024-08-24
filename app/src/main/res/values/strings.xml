@@ -16,4 +16,5 @@
     <string name="image_avatar">avatar\n</string>
     <string name="search_hint">Search a user...</string>
     <string name="cancel">Cancel</string>
+    <string name="full_name">Full name</string>
 </resources>

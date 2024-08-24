@@ -1,10 +1,15 @@
 package com.example.assignment.db;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(tableName = "user_table")
-public class UserEntity {
+public class UserEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String email;
@@ -34,5 +39,17 @@ public class UserEntity {
     }
     public void setLast_name(String last_name) {
         this.last_name = last_name;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", avatar='" + avatar + '\'' +
+                '}';
     }
 }

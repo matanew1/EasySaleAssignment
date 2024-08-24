@@ -1,22 +1,38 @@
 package com.example.assignment.utils;
 
-import android.content.Context;
 import android.util.Patterns;
 
+import androidx.annotation.NonNull;
+
+/**
+ * Helper class for input validation.
+ */
 public class ValidationHelper {
 
-    // Validate the first name field
-    public static boolean validateFirstName(Context context, String firstName) {
-        return !firstName.trim().isEmpty();
+    /**
+     * Validate the first name field.
+     * @param firstName The first name to validate.
+     * @return True if the first name is valid, false otherwise.
+     */
+    public static boolean validateFirstName(@NonNull String firstName) {
+        return firstName.trim().isEmpty();
     }
 
-    // Validate the last name field
-    public static boolean validateLastName(Context context, String lastName) {
-        return !lastName.trim().isEmpty();
+    /**
+     * Validate the last name field.
+     * @param lastName The last name to validate.
+     * @return True if the last name is valid, false otherwise.
+     */
+    public static boolean validateLastName(@NonNull String lastName) {
+        return lastName.trim().isEmpty();
     }
 
-    // Validate the email field
-    public static boolean validateEmail(Context context, String email) {
-        return !email.trim().isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    /**
+     * Validate the email field.
+     * @param email The email to validate.
+     * @return True if the email is valid, false otherwise.
+     */
+    public static boolean validateEmail(@NonNull String email) {
+        return email.trim().isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }

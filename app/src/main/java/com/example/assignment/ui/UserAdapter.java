@@ -18,13 +18,16 @@ import com.example.assignment.db.UserEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter for displaying a list of users in a RecyclerView.
+ */
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
     static List<UserEntity> users = new ArrayList<>();
-    private static OnItemClickListener listener;
+    private static OnItemClickListener itemListener;
     private static OnDeleteClickListener deleteListener;
 
-    public static void setListener(OnItemClickListener listener) {
-        UserAdapter.listener = listener;
+    public void setItemListener(OnItemClickListener itemListener) {
+        UserAdapter.itemListener = itemListener;
     }
 
     public void setDeleteListener(OnDeleteClickListener deleteListener) {
@@ -86,8 +89,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
-                if (listener != null && position != RecyclerView.NO_POSITION) {
-                    listener.onItemClick(users.get(position));
+                if (itemListener != null && position != RecyclerView.NO_POSITION) {
+                    itemListener.onItemClick(position);
                 }
             });
 
@@ -101,7 +104,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
 
     public interface OnItemClickListener {
-        void onItemClick(UserEntity user);
+        void onItemClick(int position);
     }
 
     public interface OnDeleteClickListener {

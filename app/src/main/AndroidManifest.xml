@@ -36,7 +36,11 @@
             android:name=".ui.UpdateUserActivity"
             android:exported="true" />
 
-        <!-- Other activities can be added here -->
+
+        <!-- Activity to view a user -->
+        <activity
+            android:name=".ui.ViewUserActivity"
+            android:exported="true" />
 
     </application>
 

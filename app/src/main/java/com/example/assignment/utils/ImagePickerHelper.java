@@ -12,7 +12,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.assignment.ui.AddUserActivity;
+import com.example.assignment.ui.UpdateUserActivity;
 
+/**
+ * Helper class for handling image selection and URL input.
+ */
 public class ImagePickerHelper {
 
     /**
@@ -36,12 +40,27 @@ public class ImagePickerHelper {
                 .show();
     }
 
+    /**
+     * Opens the gallery for the user to select an image.
+     *
+     * @param activity Activity context.
+     */
     private static void openGallery(@NonNull Activity activity) {
-        AddUserActivity addUserActivity = (AddUserActivity) activity;
-        ActivityResultLauncher<PickVisualMediaRequest> launcher = addUserActivity.getLauncher();
+        ActivityResultLauncher<PickVisualMediaRequest> launcher = null;
+        if ((activity instanceof AddUserActivity)) {
+            AddUserActivity addUserActivity = (AddUserActivity) activity;
+            launcher = addUserActivity.getLauncher();
+        } else if ((activity instanceof UpdateUserActivity)) {
+            UpdateUserActivity updateUserActivity = (UpdateUserActivity) activity;
+            launcher = updateUserActivity.getLauncher();
+        }
+        if (launcher == null) {
+            return;
+        }
         launcher.launch(new PickVisualMediaRequest.Builder()
                 .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
                 .build());
+
     }
 
     /**

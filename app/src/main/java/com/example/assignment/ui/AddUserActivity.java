@@ -131,17 +131,17 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
     private boolean validateInput(String firstName, String lastName, String email) {
         boolean isValid = true;
 
-        if (!ValidationHelper.validateFirstName(this, firstName)) {
+        if (ValidationHelper.validateFirstName(firstName)) {
             firstNameLayout.setError("First name is required");
             isValid = false;
         }
 
-        if (!ValidationHelper.validateLastName(this, lastName)) {
+        if (ValidationHelper.validateLastName(lastName)) {
             lastNameLayout.setError("Last name is required");
             isValid = false;
         }
 
-        if (!ValidationHelper.validateEmail(this, email)) {
+        if (ValidationHelper.validateEmail(email)) {
             emailLayout.setError("Valid email is required");
             isValid = false;
         }

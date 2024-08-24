@@ -1,10 +1,10 @@
 package com.example.assignment.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -69,6 +69,16 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
             UserEntity user = adapter.getUserAtPosition(position);
             userViewModel.deleteUser(user);
         });
+        adapter.setItemListener(position -> {
+            UserEntity user = adapter.getUserAtPosition(position);
+            switchToViewUser(user);
+        });
+    }
+
+    private void switchToViewUser(UserEntity user) {
+        Intent intent = new Intent(this, ViewUserActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
     }
 
     private void setupSearch() {

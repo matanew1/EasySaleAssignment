@@ -13,6 +13,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -44,11 +47,23 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
     private TextInputLayout emailLayout;
     private ProgressBar imageLoadingProgress;
     private UserEntity selectedUser;
+    private ActivityResultLauncher<PickVisualMediaRequest> launcher;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_user);
+
+        launcher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), o -> {
+            if (o == null) {
+                Toast.makeText(UpdateUserActivity.this, "No image Selected", Toast.LENGTH_SHORT).show();
+            } else {
+                Glide.with(getApplicationContext()).load(o).into(avatarImageView);
+                imageUri = o;
+                uploadTextView.setVisibility(TextView.GONE);
+            }
+        });
 
         initializeViews();
         setupViewModel();
@@ -58,6 +73,10 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
         if (savedInstanceState == null) {
             loadFragment(new MenuFragment());
         }
+    }
+
+    public ActivityResultLauncher<PickVisualMediaRequest> getLauncher() {
+        return launcher;
     }
 
     private void initializeViews() {
@@ -99,11 +118,10 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Handle no item selected
             }
         });
 
-        avatarImageView.setOnClickListener(v -> ImagePickerHelper.openImagePicker(UpdateUserActivity.this, UpdateUserActivity.this));
+        avatarImageView.setOnClickListener(v -> ImagePickerHelper.openImagePicker(this, this));
 
         Button submitButton = findViewById(R.id.btn_submit);
         submitButton.setOnClickListener(v -> validateAndSubmitUser());
@@ -159,11 +177,6 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
         }
     }
 
-    @Override
-    public void onImageUploaded(@NonNull String imageUri) {
-
-    }
-
     private void validateAndSubmitUser() {
         String firstName = getTextFromLayout(firstNameLayout);
         String lastName = getTextFromLayout(lastNameLayout);
@@ -195,17 +208,17 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
     private boolean validateInput(String firstName, String lastName, String email) {
         boolean isValid = true;
 
-        if (!ValidationHelper.validateFirstName(this, firstName)) {
+        if (ValidationHelper.validateFirstName(firstName)) {
             firstNameLayout.setError("First name is required");
             isValid = false;
         }
 
-        if (!ValidationHelper.validateLastName(this, lastName)) {
+        if (ValidationHelper.validateLastName(lastName)) {
             lastNameLayout.setError("Last name is required");
             isValid = false;
         }
 
-        if (!ValidationHelper.validateEmail(this, email)) {
+        if (ValidationHelper.validateEmail(email)) {
             emailLayout.setError("Valid email is required");
             isValid = false;
         }
