@@ -1,6 +1,5 @@
 package com.example.assignment.ui;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -72,15 +70,6 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
 
         Button cancelButton = findViewById(R.id.btn_cancel);
         cancelButton.setOnClickListener(v -> finish());
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == ImagePickerHelper.PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
-            ImagePickerHelper.handleImageResult(this, data, this);
-        }
     }
 
     @Override
