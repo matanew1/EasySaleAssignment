@@ -147,13 +147,6 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
     }
 
     @Override
-    public void onImageSelected(@NonNull Uri uri) {
-        imageUri = uri;
-        uploadTextView.setVisibility(View.GONE); // Hide the hint text
-        ImageLoader.loadImage(this, imageUri, avatarImageView);
-    }
-
-    @Override
     public void onImageUrlEntered(@NonNull String imageUrl) {
         if (!imageUrl.isEmpty() && Patterns.WEB_URL.matcher(imageUrl).matches()) {
             imageLoadingProgress.setVisibility(ProgressBar.VISIBLE);
@@ -164,6 +157,11 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
         } else {
             Toast.makeText(this, "Invalid URL", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onImageUploaded(@NonNull String imageUri) {
+
     }
 
     private void validateAndSubmitUser() {

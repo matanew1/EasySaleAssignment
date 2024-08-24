@@ -4,11 +4,17 @@ import android.app.Activity;
 import android.text.InputType;
 import android.widget.EditText;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.example.assignment.ui.AddUserActivity;
+
 public class ImagePickerHelper {
+
     /**
      * Opens a dialog for the user to choose how to select an image (e.g., via URL input).
      *
@@ -16,16 +22,26 @@ public class ImagePickerHelper {
      * @param listener Listener for handling image selection events.
      */
     public static void openImagePicker(@NonNull Activity activity, @Nullable ImageSelectionListener listener) {
-        String[] options = {"Enter Image URL"};
+        String[] options = {"Enter Web Image URL", "Upload Image From Gallery"};
 
         new AlertDialog.Builder(activity)
                 .setTitle("Choose an option")
                 .setItems(options, (dialog, which) -> {
                     if (which == 0) {
                         showUrlInputDialog(activity, listener);
+                    } else if (which == 1) {
+                        openGallery(activity, listener);
                     }
                 })
                 .show();
+    }
+
+    private static void openGallery(@NonNull Activity activity, @Nullable ImageSelectionListener listener) {
+        AddUserActivity addUserActivity = (AddUserActivity) activity;
+        ActivityResultLauncher<PickVisualMediaRequest> launcher = addUserActivity.getLauncher();
+        launcher.launch(new PickVisualMediaRequest.Builder()
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                .build());
     }
 
     /**
@@ -55,5 +71,6 @@ public class ImagePickerHelper {
      */
     public interface ImageSelectionListener {
         void onImageUrlEntered(@NonNull String imageUrl);
+        void onImageUploaded(@NonNull String imageUri);
     }
 }

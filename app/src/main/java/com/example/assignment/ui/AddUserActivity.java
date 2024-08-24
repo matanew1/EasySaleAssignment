@@ -10,11 +10,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.example.assignment.R;
 import com.example.assignment.db.UserEntity;
 import com.example.assignment.utils.ILoadFragment;
@@ -34,11 +39,22 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
     private TextInputLayout lastNameLayout;
     private TextInputLayout emailLayout;
     private ProgressBar imageLoadingProgress;
+    private ActivityResultLauncher<PickVisualMediaRequest> launcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
+
+        launcher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), o -> {
+            if (o == null) {
+                Toast.makeText(AddUserActivity.this, "No image Selected", Toast.LENGTH_SHORT).show();
+            } else {
+                Glide.with(getApplicationContext()).load(o).into(avatarImageView);
+                imageUri = o;
+                uploadTextView.setVisibility(TextView.GONE);
+            }
+        });
 
         initializeViews();
         setupViewModel();
@@ -47,6 +63,10 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
         if (savedInstanceState == null) {
             loadFragment(new MenuFragment());
         }
+    }
+
+    public ActivityResultLauncher<PickVisualMediaRequest> getLauncher() {
+        return launcher;
     }
 
     private void initializeViews() {
@@ -84,6 +104,12 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
             Toast.makeText(this, "Invalid URL", Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void onImageUploaded(@NonNull String imageUri) {
+
+    }
+
 
     private void validateAndSubmitUser() {
         String firstName = ((EditText) findViewById(R.id.first_name_et)).getText().toString();
