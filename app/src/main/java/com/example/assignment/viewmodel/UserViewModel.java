@@ -17,7 +17,6 @@ public class UserViewModel extends AndroidViewModel {
     private UserRepository repository;
     // LiveData holding a list of UserEntity objects representing all users
     private LiveData<List<UserEntity>> allUsers;
-    private int currentPage = 1;
 
     // Constructor for the UserViewModel
     public UserViewModel(@NonNull Application application) {
@@ -51,11 +50,9 @@ public class UserViewModel extends AndroidViewModel {
     }
 
     public void fetchUsersFromApi() {
-        repository.fetchUsersFromApi(currentPage, hasData -> {
-            if (hasData) {
-                currentPage++;
-            }
-        });
+        int currentPage = 1;
+        int totalPages = 100;
+        repository.fetchUsersFromApi(currentPage, totalPages);
     }
 
 }

@@ -25,9 +25,6 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
     private UserViewModel userViewModel;
     private UserAdapter adapter;
     private List<UserEntity> allUsers = new ArrayList<>();
-    private boolean isLoading = false;
-    private int currentPage = 1;
-    private final int PAGE_SIZE = 20; // Number of items per page
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,26 +61,6 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
 
         adapter = new UserAdapter();
         recyclerView.setAdapter(adapter);
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy); // Call the super method first
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                if (layoutManager != null && !isLoading) { // Check if layoutManager is not null and not loading
-                    int visibleItemCount = layoutManager.getChildCount(); // Get the number of visible items
-                    int totalItemCount = layoutManager.getItemCount(); // Get the total number of items
-                    int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition(); // Get the position of the first visible item
-
-                    // Check if we have reached the end of the list
-                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
-                        // Load more data
-                        loadMoreUsers();
-                    }
-                }
-            }
-        });
-
         setupAdapterListener();
     }
 
@@ -117,12 +94,6 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
                         user.getEmail().toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
         adapter.setUsers(filteredUsers);
-    }
-
-    private void loadMoreUsers() {
-        isLoading = true;
-        userViewModel.fetchUsersFromApi();
-        currentPage++;
     }
 
     @Override

@@ -62,8 +62,8 @@ public class UserRepository {
     }
 
     // Method to fetch users from the API
-    public void fetchUsersFromApi(int page, ApiCallback callback) {
-        apiService.getUsers(page).enqueue(new Callback<UserResponse>() {
+    public void fetchUsersFromApi(int page, int totalPages) {
+        apiService.getUsers(page, totalPages).enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -72,19 +72,12 @@ public class UserRepository {
                         for (UserEntity user : users) {
                             insert(user);
                         }
-                        callback.onResult(true);
-                    } else {
-                        callback.onResult(false);
                     }
-                } else {
-                    callback.onResult(false);
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
-                callback.onResult(false);
-            }
+            public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {}
         });
     }
 

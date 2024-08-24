@@ -9,7 +9,7 @@ public interface ApiService {
 
     // Define a GET request to fetch users from the API endpoint "api/users"
     @GET("api/users")
-    Call<UserResponse> getUsers(@Query("page") int page);
+    Call<UserResponse> getUsers(@Query("page") int page, @Query("per_page") int perPage);
     // This method takes an integer parameter 'page' to specify the page number in the API request
     // The @Query annotation appends the 'page' parameter to the request URL as a query parameter
     // Returns a Call object that will contain the response in a UserResponse object when the request is executed
