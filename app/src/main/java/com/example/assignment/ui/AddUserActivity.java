@@ -73,15 +73,6 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
     }
 
     @Override
-    public void onImageSelected(@NonNull Uri imageUri) {
-        imageLoadingProgress.setVisibility(ProgressBar.VISIBLE);
-        this.imageUri = imageUri;
-        ImageLoader.loadImage(this, imageUri, avatarImageView);
-        uploadTextView.setVisibility(TextView.GONE);
-        imageLoadingProgress.setVisibility(ProgressBar.GONE);
-    }
-
-    @Override
     public void onImageUrlEntered(@NonNull String imageUrl) {
         if (!imageUrl.isEmpty() && Patterns.WEB_URL.matcher(imageUrl).matches()) {
             imageLoadingProgress.setVisibility(ProgressBar.VISIBLE);
