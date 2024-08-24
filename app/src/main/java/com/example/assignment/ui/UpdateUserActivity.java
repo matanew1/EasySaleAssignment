@@ -1,5 +1,6 @@
 package com.example.assignment.ui;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -35,7 +36,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UpdateUserActivity extends AppCompatActivity implements ILoadFragment, ImagePickerHelper.ImageSelectionListener {
+public class UpdateUserActivity extends AppCompatActivity implements ILoadFragment, ImagePickerHelper.ImageSelectionListener, ImagePickerHelper.GalleryLauncherProvider {
 
     private Spinner userSpinner;
     private ImageView avatarImageView;
@@ -73,10 +74,6 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
         if (savedInstanceState == null) {
             loadFragment(new MenuFragment());
         }
-    }
-
-    public ActivityResultLauncher<PickVisualMediaRequest> getLauncher() {
-        return launcher;
     }
 
     private void initializeViews() {
@@ -177,6 +174,11 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
         }
     }
 
+    @Override
+    public void onError(@NonNull String errorMessage) {
+
+    }
+
     private void validateAndSubmitUser() {
         String firstName = getTextFromLayout(firstNameLayout);
         String lastName = getTextFromLayout(lastNameLayout);
@@ -190,7 +192,8 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
             updateUserEntity(firstName, lastName, email, imageUri.toString());
             userViewModel.updateUser(selectedUser);
             Toast.makeText(this, "User updated successfully", Toast.LENGTH_SHORT).show();
-            finish(); // Close the activity
+            Intent intent = new Intent(this, GetAllUsersActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -240,4 +243,9 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
                 .commit();
     }
 
+    @NonNull
+    @Override
+    public ActivityResultLauncher<PickVisualMediaRequest> getGalleryLauncher() {
+        return launcher;
+    }
 }

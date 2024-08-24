@@ -1,5 +1,6 @@
 package com.example.assignment.ui;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -28,7 +29,7 @@ import com.example.assignment.utils.ValidationHelper;
 import com.example.assignment.viewmodel.UserViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class AddUserActivity extends AppCompatActivity implements ILoadFragment, ImagePickerHelper.ImageSelectionListener {
+public class AddUserActivity extends AppCompatActivity implements ILoadFragment, ImagePickerHelper.ImageSelectionListener, ImagePickerHelper.GalleryLauncherProvider {
 
     private ImageView avatarImageView;
     private Uri imageUri;
@@ -62,10 +63,6 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
         if (savedInstanceState == null) {
             loadFragment(new MenuFragment());
         }
-    }
-
-    public ActivityResultLauncher<PickVisualMediaRequest> getLauncher() {
-        return launcher;
     }
 
     private void initializeViews() {
@@ -104,6 +101,11 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
         }
     }
 
+    @Override
+    public void onError(@NonNull String errorMessage) {
+
+    }
+
 
     private void validateAndSubmitUser() {
         String firstName = ((EditText) findViewById(R.id.first_name_et)).getText().toString();
@@ -118,7 +120,8 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
             UserEntity user = createUserEntity(firstName, lastName, email);
             userViewModel.addNewUser(user);
             Toast.makeText(this, "User added successfully", Toast.LENGTH_SHORT).show();
-            finish(); // Close the activity
+            Intent intent = new Intent(this, GetAllUsersActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -168,5 +171,11 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.action_menu_view, fragment)
                 .commit();
+    }
+
+    @NonNull
+    @Override
+    public ActivityResultLauncher<PickVisualMediaRequest> getGalleryLauncher() {
+        return launcher;
     }
 }

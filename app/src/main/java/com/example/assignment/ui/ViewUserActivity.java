@@ -2,6 +2,7 @@ package com.example.assignment.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,7 +17,7 @@ import com.example.assignment.utils.ILoadFragment;
 
 import java.util.Objects;
 
-public class ViewUserActivity extends AppCompatActivity  implements ILoadFragment {
+public class ViewUserActivity extends AppCompatActivity implements ILoadFragment{
 
     private ImageView avatarImageView;
     private TextView firstNameTextView;
@@ -35,6 +36,12 @@ public class ViewUserActivity extends AppCompatActivity  implements ILoadFragmen
         Intent intent = getIntent();
         user = (UserEntity) intent.getSerializableExtra("user");
 
+        if (user == null) {
+            // Handle the case where the user is null, possibly finishing the activity or showing an error.
+            finish();
+            return;
+        }
+
         // initialize views
         initViews();
 
@@ -51,9 +58,12 @@ public class ViewUserActivity extends AppCompatActivity  implements ILoadFragmen
     @SuppressLint("SetTextI18n")
     private void loadUserData() {
         // load avatar image
-        Glide.with(this)
-                .load(Objects.requireNonNull(user).getAvatar())
-                .into(this.avatarImageView);
+        Uri avatarUri = Uri.parse(user.getAvatar());
+        if (avatarUri != null) {
+            Glide.with(this)
+                    .load(avatarUri)
+                    .into(avatarImageView);
+        }
 
         // load first name
         this.firstNameTextView.setText(user.getFirstName());

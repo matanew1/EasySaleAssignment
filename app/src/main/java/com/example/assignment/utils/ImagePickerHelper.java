@@ -34,33 +34,33 @@ public class ImagePickerHelper {
                     if (which == 0) {
                         showUrlInputDialog(activity, listener);
                     } else if (which == 1) {
-                        openGallery(activity);
+                        openGallery(activity, listener);
                     }
                 })
                 .show();
     }
+
+
 
     /**
      * Opens the gallery for the user to select an image.
      *
      * @param activity Activity context.
      */
-    private static void openGallery(@NonNull Activity activity) {
+    private static void openGallery(@NonNull Activity activity, @Nullable ImageSelectionListener listener) {
         ActivityResultLauncher<PickVisualMediaRequest> launcher = null;
-        if ((activity instanceof AddUserActivity)) {
-            AddUserActivity addUserActivity = (AddUserActivity) activity;
-            launcher = addUserActivity.getLauncher();
-        } else if ((activity instanceof UpdateUserActivity)) {
-            UpdateUserActivity updateUserActivity = (UpdateUserActivity) activity;
-            launcher = updateUserActivity.getLauncher();
-        }
-        if (launcher == null) {
-            return;
-        }
-        launcher.launch(new PickVisualMediaRequest.Builder()
-                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
-                .build());
 
+        if (activity instanceof GalleryLauncherProvider) {
+            launcher = ((GalleryLauncherProvider) activity).getGalleryLauncher();
+        }
+
+        if (launcher != null) {
+            launcher.launch(new PickVisualMediaRequest.Builder()
+                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                    .build());
+        } else if (listener != null) {
+            listener.onError("Gallery launcher is not initialized.");
+        }
     }
 
     /**
@@ -90,5 +90,14 @@ public class ImagePickerHelper {
      */
     public interface ImageSelectionListener {
         void onImageUrlEntered(@NonNull String imageUrl);
+        void onError(@NonNull String errorMessage);
+    }
+
+    /**
+     * Interface for activities that provide a gallery launcher.
+     */
+    public interface GalleryLauncherProvider {
+        @NonNull
+        ActivityResultLauncher<PickVisualMediaRequest> getGalleryLauncher();
     }
 }
