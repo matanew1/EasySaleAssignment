@@ -10,7 +10,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -103,11 +102,6 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
         } else {
             Toast.makeText(this, "Invalid URL", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public void onImageUploaded(@NonNull String imageUri) {
-
     }
 
 

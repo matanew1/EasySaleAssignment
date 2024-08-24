@@ -30,13 +30,13 @@ public class ImagePickerHelper {
                     if (which == 0) {
                         showUrlInputDialog(activity, listener);
                     } else if (which == 1) {
-                        openGallery(activity, listener);
+                        openGallery(activity);
                     }
                 })
                 .show();
     }
 
-    private static void openGallery(@NonNull Activity activity, @Nullable ImageSelectionListener listener) {
+    private static void openGallery(@NonNull Activity activity) {
         AddUserActivity addUserActivity = (AddUserActivity) activity;
         ActivityResultLauncher<PickVisualMediaRequest> launcher = addUserActivity.getLauncher();
         launcher.launch(new PickVisualMediaRequest.Builder()
@@ -71,6 +71,5 @@ public class ImagePickerHelper {
      */
     public interface ImageSelectionListener {
         void onImageUrlEntered(@NonNull String imageUrl);
-        void onImageUploaded(@NonNull String imageUri);
     }
 }
