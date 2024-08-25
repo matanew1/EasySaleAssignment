@@ -36,12 +36,6 @@
             android:name=".ui.UpdateUserActivity"
             android:exported="true" />
 
-
-        <!-- Activity to view a user -->
-        <activity
-            android:name=".ui.ViewUserActivity"
-            android:exported="true" />
-
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
