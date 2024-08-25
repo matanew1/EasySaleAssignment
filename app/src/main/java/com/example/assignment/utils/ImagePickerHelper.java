@@ -11,9 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
-import com.example.assignment.ui.AddUserActivity;
-import com.example.assignment.ui.UpdateUserActivity;
-
 /**
  * Helper class for handling image selection and URL input.
  */

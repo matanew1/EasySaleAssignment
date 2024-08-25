@@ -6,6 +6,9 @@ import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
+/**
+ * Entity class representing a user in the database.
+ */
 @Entity(tableName = "user_table")
 public class UserEntity implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -17,7 +20,12 @@ public class UserEntity implements Serializable {
     private String last_name;
     private String avatar;
 
-    // Getters and Setters
+    /**
+     * Default constructor for UserEntity.
+     */
+    private UserEntity() {}
+
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getEmail() { return email; }
@@ -41,6 +49,11 @@ public class UserEntity implements Serializable {
         this.last_name = last_name;
     }
 
+
+    /**
+     * Converts the UserEntity object to a string representation.
+     * @return A string representation of the UserEntity object.
+     */
     @NonNull
     @Override
     public String toString() {

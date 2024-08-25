@@ -20,11 +20,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Activity to display all users.
+ */
 public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragment {
     private UserViewModel userViewModel;
     private UserAdapter adapter;
     private List<UserEntity> allUsers = new ArrayList<>();
 
+    /**
+     * Called when the activity is first created.
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +49,9 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
         }
     }
 
+    /**
+     * Initializes the ViewModel for handling user data.
+     */
     private void initializeViewModel() {
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         userViewModel.getAllUsers().observe(this, users -> {
@@ -52,6 +65,9 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
         });
     }
 
+    /**
+     * Sets up the RecyclerView for displaying user data.
+     */
     private void setupRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -63,6 +79,9 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
         setupAdapterListener();
     }
 
+    /**
+     * Sets up the adapter listener for handling user deletion.
+     */
     private void setupAdapterListener() {
         adapter.setDeleteListener(position -> {
             UserEntity user = adapter.getUserAtPosition(position);
@@ -71,6 +90,9 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
     }
 
 
+    /**
+     * Sets up the search functionality for filtering user data.
+     */
     private void setupSearch() {
         TextInputEditText searchBar = findViewById(R.id.search_bar);
         searchBar.addTextChangedListener(new TextWatcher() {
@@ -87,7 +109,12 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
         });
     }
 
+    /**
+     * Filters the user data based on the given query.
+     * @param query The search query.
+     */
     private void filterUsers(String query) {
+        // Filter the users based on the query
         List<UserEntity> filteredUsers = allUsers.stream()
                 .filter(user -> user.getFirstName().toLowerCase().contains(query.toLowerCase()) ||
                         user.getLastName().toLowerCase().contains(query.toLowerCase()) ||
@@ -96,6 +123,10 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
         adapter.setUsers(filteredUsers);
     }
 
+    /**
+     * Loads a fragment into the specified container.
+     * @param fragment The fragment to load.
+     */
     @Override
     public void loadFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()

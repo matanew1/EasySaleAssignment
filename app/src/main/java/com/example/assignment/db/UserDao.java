@@ -10,26 +10,43 @@ import androidx.room.Update;
 
 import java.util.List;
 
-// Data Access Object (DAO) interface for performing database operations on the UserEntity table
+/**
+ * Data Access Object (DAO) for the UserEntity.
+ */
 @Dao
 public interface UserDao {
 
-    // Insert a new UserEntity into the user_table. If there's a conflict (e.g., same ID), replace the existing entry
+    /**
+     * Insert a new UserEntity into the user_table.
+     * @param user The UserEntity to be inserted.
+     */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(UserEntity user);
 
-    // Update an existing UserEntity in the user_table
+    /**
+     * Update an existing UserEntity in the user_table.
+     * @param user The UserEntity to be updated.
+     */
     @Update
     void update(UserEntity user);
 
-    // Delete a UserEntity from the user_table
+    /**
+     * Delete a UserEntity from the user_table.
+     * @param user The UserEntity to be deleted.
+     */
     @Delete
     void delete(UserEntity user);
 
-    // Query to retrieve all users from the user_table, ordered by their ID in ascending order
+    /**
+     * Get all UserEntity objects from the user_table.
+     * @return A LiveData object containing a list of all UserEntity objects.
+     */
     @Query("SELECT * FROM user_table ORDER BY id ASC")
     LiveData<List<UserEntity>> getAllUsers(); // Returns a LiveData object containing a list of all UserEntity objects
 
+    /**
+     * Delete all UserEntity objects from the user_table.
+     */
     @Query("DELETE FROM user_table")
     void deleteAllUsers();
 }

@@ -15,8 +15,23 @@ import androidx.fragment.app.Fragment;
 
 import com.example.assignment.R;
 
+/**
+ * Fragment representing the menu screen.
+ */
 public class MenuFragment extends Fragment {
 
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return Return the View for the fragment's UI, or null.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -25,6 +40,11 @@ public class MenuFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_menu, container, false);
     }
 
+    /**
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -41,9 +61,8 @@ public class MenuFragment extends Fragment {
     }
 
     /**
-     * Switches to the specified activity with a custom transition animation.
-     *
-     * @param target The activity class to switch to.
+     * Switches the current screen to the specified activity.
+     * @param target The activity to switch to.
      */
     private void switchScreen(Class<? extends Activity> target) {
         Intent intent = new Intent(getActivity(), target);

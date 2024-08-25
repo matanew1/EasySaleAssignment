@@ -18,14 +18,17 @@ import retrofit2.Response;
 
 import java.util.List;
 
-// Repository class that handles data operations for UserEntity
+/**
+ * Repository class for managing user-related data operations.
+ */
 public class UserRepository {
-    // Data Access Object (DAO) for user-related database operations
-    private UserDao userDao;
-    // API service for making network requests
-    private ApiService apiService;
+    private UserDao userDao; // Database access object for user data
+    private ApiService apiService; // API service for making network requests
 
-    // Constructor for UserRepository, takes an Application as a parameter
+    /**
+     * Constructor for the UserRepository class.
+     * @param application The application context.
+     */
     public UserRepository(Application application) {
         // Get the instance of the Room database and initialize UserDao
         UserDatabase db = UserDatabase.getDatabase(application);
@@ -34,36 +37,49 @@ public class UserRepository {
         apiService = ApiClient.getApiService();
     }
 
-    // Method to get all users from the local database, returns LiveData containing a list of UserEntity objects
+    /**
+     * Get all users from the local database.
+     * @return LiveData object containing a list of all users.
+     */
     public LiveData<List<UserEntity>> getAllUsers() {
         return userDao.getAllUsers(); // Returns the LiveData object containing all users from the database
     }
 
-    // Method to insert a new user into the local database
+    /**
+     * Insert a new user into the local database.
+     * @param user The user entity to be inserted.
+     */
     public void insert(UserEntity user) {
         // Runs the insert operation in a background thread
         new Thread(() -> userDao.insert(user)).start();
     }
 
-    // Method to update an existing user in the local database
+    /**
+     * Update an existing user in the local database.
+     * @param user The user entity to be updated.
+     */
     public void update(UserEntity user) {
         // Runs the update operation in a background thread
         new Thread(() -> userDao.update(user)).start();
     }
 
-    // Method to delete a user from the local database
+    /**
+     * Delete a user from the local database.
+     * @param user The user entity to be deleted.
+     */
     public void delete(UserEntity user) {
         // Runs the delete operation in a background thread
         new Thread(() -> userDao.delete(user)).start();
     }
 
-    public interface ApiCallback {
-        void onResult(boolean hasData);
-    }
-
-    // Method to fetch users from the API
+    /**
+     * Fetch users from the API and insert them into the local database.
+     * @param page The current page number for pagination.
+     * @param totalPages The total number of pages.
+     */
     public void fetchUsersFromApi(int page, int totalPages) {
         apiService.getUsers(page, totalPages).enqueue(new Callback<UserResponse>() {
+
             @Override
             public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -81,6 +97,9 @@ public class UserRepository {
         });
     }
 
+    /**
+     * Delete all users from the local database.
+     */
     public void deleteAllUsers() {
         new Thread(() -> userDao.deleteAllUsers()).start();
     }

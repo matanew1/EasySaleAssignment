@@ -28,6 +28,9 @@ import com.example.assignment.utils.ValidationHelper;
 import com.example.assignment.viewmodel.UserViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
+/**
+ * This class represents the activity for adding a new user.
+ */
 public class AddUserActivity extends AppCompatActivity implements ILoadFragment, ImagePickerHelper.ImageSelectionListener, ImagePickerHelper.GalleryLauncherProvider {
 
     private ImageView avatarImageView;
@@ -40,6 +43,13 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
     private ProgressBar imageLoadingProgress;
     private ActivityResultLauncher<PickVisualMediaRequest> launcher;
 
+    /**
+     * Called when the activity is first created.
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +74,9 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
         }
     }
 
+    /**
+     * Initializes the views in the activity.
+     */
     private void initializeViews() {
         avatarImageView = findViewById(R.id.avatar_image);
         uploadTextView = findViewById(R.id.upload_text);
@@ -73,10 +86,16 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
         emailLayout = findViewById(R.id.email_layout);
     }
 
+    /**
+     * Sets up the ViewModel for the activity.
+     */
     private void setupViewModel() {
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
     }
 
+    /**
+     * Sets up the listeners for the activity.
+     */
     private void setupListeners() {
         avatarImageView.setOnClickListener(v -> ImagePickerHelper.openImagePicker(this, this));
 
@@ -87,6 +106,10 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
         cancelButton.setOnClickListener(v -> finish());
     }
 
+    /**
+     * Called when an image URL is entered.
+     * @param imageUrl The URL of the image.
+     */
     @Override
     public void onImageUrlEntered(@NonNull String imageUrl) {
         if (!imageUrl.isEmpty() && Patterns.WEB_URL.matcher(imageUrl).matches()) {
@@ -100,12 +123,18 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
         }
     }
 
+    /**
+     * Called when an error occurs during image selection.
+     * @param errorMessage The error message.
+     */
     @Override
     public void onError(@NonNull String errorMessage) {
 
     }
 
-
+    /**
+     * Validates and submits the user data.
+     */
     private void validateAndSubmitUser() {
         String firstName = ((EditText) findViewById(R.id.first_name_et)).getText().toString();
         String lastName = ((EditText) findViewById(R.id.last_name_et)).getText().toString();
@@ -124,12 +153,22 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
         }
     }
 
+    /**
+     * Clears the error messages in the input fields.
+     */
     private void clearErrors() {
         firstNameLayout.setError(null);
         lastNameLayout.setError(null);
         emailLayout.setError(null);
     }
 
+    /**
+     * Validates the input fields.
+     * @param firstName The first name.
+     * @param lastName The last name.
+     * @param email The email.
+     * @return True if the input is valid, false otherwise.
+     */
     private boolean validateInput(String firstName, String lastName, String email) {
         boolean isValid = true;
 
@@ -151,6 +190,13 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
         return isValid;
     }
 
+    /**
+     * Creates a new UserEntity object with the given first name, last name, and email.
+     * @param firstName The first name.
+     * @param lastName The last name.
+     * @param email The email.
+     * @return A new UserEntity object.
+     */
     @NonNull
     private UserEntity createUserEntity(String firstName, String lastName, String email) {
         UserEntity user = new UserEntity();
@@ -165,6 +211,10 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
         return user;
     }
 
+    /**
+     * Loads a fragment into the activity.
+     * @param fragment The fragment to load.
+     */
     @Override
     public void loadFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
@@ -172,6 +222,10 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
                 .commit();
     }
 
+    /**
+     * Returns the launcher for image selection.
+     * @return The launcher for image selection.
+     */
     @NonNull
     @Override
     public ActivityResultLauncher<PickVisualMediaRequest> getGalleryLauncher() {
