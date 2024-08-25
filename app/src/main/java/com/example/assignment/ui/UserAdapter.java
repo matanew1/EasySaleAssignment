@@ -11,9 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.assignment.R;
 import com.example.assignment.db.UserEntity;
+import com.example.assignment.utils.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +49,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.textViewName.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
         holder.textViewEmail.setText(currentUser.getEmail());
         try {
-            Glide.with(holder.imageViewAvatar.getContext())
-                    .load(currentUser.getAvatar())
-                    .into(holder.imageViewAvatar);
+            ImageLoader.loadImage(holder.imageViewAvatar.getContext(), currentUser.getAvatar(), holder.imageViewAvatar);
         } catch (Exception e) {
             Log.e("Glide", "Error loading image: "+e.getMessage());
         }

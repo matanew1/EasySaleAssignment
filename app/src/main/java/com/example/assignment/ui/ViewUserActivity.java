@@ -15,8 +15,6 @@ import com.example.assignment.R;
 import com.example.assignment.db.UserEntity;
 import com.example.assignment.utils.ILoadFragment;
 
-import java.util.Objects;
-
 public class ViewUserActivity extends AppCompatActivity implements ILoadFragment{
 
     private ImageView avatarImageView;
@@ -37,7 +35,6 @@ public class ViewUserActivity extends AppCompatActivity implements ILoadFragment
         user = (UserEntity) intent.getSerializableExtra("user");
 
         if (user == null) {
-            // Handle the case where the user is null, possibly finishing the activity or showing an error.
             finish();
             return;
         }

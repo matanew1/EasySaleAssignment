@@ -23,7 +23,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.bumptech.glide.Glide;
 import com.example.assignment.R;
 import com.example.assignment.db.UserEntity;
 import com.example.assignment.utils.ILoadFragment;
@@ -60,7 +59,7 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
             if (o == null) {
                 Toast.makeText(UpdateUserActivity.this, "No image Selected", Toast.LENGTH_SHORT).show();
             } else {
-                Glide.with(getApplicationContext()).load(o).into(avatarImageView);
+                ImageLoader.loadImage(this, o, avatarImageView);
                 imageUri = o;
                 uploadTextView.setVisibility(TextView.GONE);
             }
@@ -148,9 +147,7 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
     private void loadAvatar(String avatarUrl) {
         if (avatarUrl != null && !avatarUrl.isEmpty()) {
             imageLoadingProgress.setVisibility(View.VISIBLE);
-            Glide.with(this)
-                    .load(avatarUrl)
-                    .into(avatarImageView);
+            ImageLoader.loadImage(this, Uri.parse(avatarUrl), avatarImageView);
             imageLoadingProgress.setVisibility(View.GONE);
         }
     }
