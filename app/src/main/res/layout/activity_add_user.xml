@@ -127,7 +127,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="16dp"
                 android:orientation="horizontal">
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
@@ -141,11 +140,10 @@
                         android:id="@+id/btn_submit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/add_user"
+                        android:text="@string/update_user"
                         android:textColor="@color/colorButtonText"
-                        android:padding="16dp"
                         app:cornerRadius="8dp"
-                        android:background="#6EB9C3"/>
+                        android:background="#6EB9C3" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -162,13 +160,10 @@
                         android:layout_height="wrap_content"
                         android:text="@string/cancel"
                         android:textColor="@color/colorButtonText"
-                        android:padding="16dp"
                         app:cornerRadius="8dp"
-                        android:background="#6EB9C3"/>
+                        android:background="#6EB9C3" />
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
-
-
         </LinearLayout>
 
         <!-- Action Menu -->
