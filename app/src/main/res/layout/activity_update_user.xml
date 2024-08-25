@@ -41,8 +41,6 @@
                 android:text="Choose User"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:padding="4dp"
                 tools:ignore="HardcodedText" />
 
             <Spinner
@@ -51,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:spinnerMode="dropdown"
                 android:textColor="@android:color/white"
-                android:padding="12dp"
+                android:padding="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"/>
         </LinearLayout>
@@ -61,8 +59,8 @@
             android:id="@+id/avatar_frame"
             android:layout_below="@+id/dropdown_menu"
             android:layout_width="match_parent"
-            android:layout_height="280dp"
-            android:layout_marginBottom="16dp"
+            android:layout_height="200dp"
+            android:layout_marginBottom="8dp"
             app:cardCornerRadius="12dp"
             android:layout_margin="16dp"
             app:cardElevation="4dp">
@@ -70,7 +68,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="16dp">
+                android:layout_margin="8dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/avatar_image"
@@ -105,14 +103,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/avatar_frame"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="8dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/first_name_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 app:hintTextColor="@color/colorPrimaryVariant">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -129,7 +127,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 app:hintTextColor="@color/colorPrimaryVariant">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -145,7 +143,7 @@
                 android:id="@+id/email_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 android:textColor="@android:color/black"
                 app:hintTextColor="@color/colorHint">
 
@@ -162,7 +160,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="16dp"
                 android:orientation="horizontal">
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
@@ -178,7 +175,6 @@
                         android:layout_height="wrap_content"
                         android:text="@string/update_user"
                         android:textColor="@color/colorButtonText"
-                        android:padding="16dp"
                         app:cornerRadius="8dp"
                         android:background="#6EB9C3" />
                 </androidx.cardview.widget.CardView>
@@ -197,7 +193,6 @@
                         android:layout_height="wrap_content"
                         android:text="@string/cancel"
                         android:textColor="@color/colorButtonText"
-                        android:padding="16dp"
                         app:cornerRadius="8dp"
                         android:background="#6EB9C3" />
                 </androidx.cardview.widget.CardView>
