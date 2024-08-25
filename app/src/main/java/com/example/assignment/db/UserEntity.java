@@ -20,12 +20,6 @@ public class UserEntity implements Serializable {
     private String last_name;
     private String avatar;
 
-    /**
-     * Default constructor for UserEntity.
-     */
-    private UserEntity() {}
-
-
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getEmail() { return email; }
