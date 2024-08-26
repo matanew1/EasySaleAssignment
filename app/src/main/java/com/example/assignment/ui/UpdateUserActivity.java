@@ -99,6 +99,16 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
 
         Button cancelButton = findViewById(R.id.btn_cancel);
         cancelButton.setOnClickListener(v -> finish());
+
+        Button deleteButton = findViewById(R.id.btn_delete);
+        deleteButton.setOnClickListener(v -> deleteUser());
+    }
+
+    private void deleteUser() {
+        userViewModel.deleteUser(currentUser);
+        Toast.makeText(this, "User deleted successfully", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, GetAllUsersActivity.class);
+        startActivity(intent);
     }
 
     private void updateUserUI(@NonNull UserEntity user) {
