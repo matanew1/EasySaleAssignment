@@ -4,6 +4,7 @@ import com.example.assignment.db.UserEntity;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -28,4 +29,7 @@ public interface ApiService {
 
     @PUT("api/users/{id}")
     Call<UserEntity> updateUser(@Path("id") int id, @Body UserEntity user);
+
+    @DELETE("api/users/{id}")
+    Call<Void> deleteUser(@Path("id") int id);
 }

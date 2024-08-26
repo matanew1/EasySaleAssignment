@@ -52,7 +52,19 @@ public class UserRepository {
      * @param user The user entity to be inserted.
      */
     public void insert(UserEntity user) {
-        executorService.execute(() -> userDao.insert(user));
+        apiService.addUser(user).enqueue(new Callback<UserEntity>() {
+            @Override
+            public void onResponse(Call<UserEntity> call, Response<UserEntity> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    executorService.execute(() -> userDao.insert(response.body()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserEntity> call, Throwable t) {
+                logError("Error inserting user: " + t.getMessage());
+            }
+        });
     }
 
     /**
@@ -60,15 +72,41 @@ public class UserRepository {
      * @param user The user entity to be updated.
      */
     public void update(UserEntity user) {
-        executorService.execute(() -> userDao.update(user));
+        apiService.updateUser(user.getId(), user).enqueue(new Callback<UserEntity>() {
+            @Override
+            public void onResponse(Call<UserEntity> call, Response<UserEntity> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    executorService.execute(() -> userDao.update(response.body()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserEntity> call, Throwable t) {
+                logError("Error updating user: " + t.getMessage());
+            }
+        });
     }
 
     /**
      * Delete a user from the local database.
      * @param user The user entity to be deleted.
      */
-    public void delete(UserEntity user) {
-        executorService.execute(() -> userDao.delete(user));
+    public void delete(@NonNull UserEntity user) {
+        apiService.deleteUser(user.getId()).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    executorService.execute(() -> userDao.delete(user));
+                } else {
+                    logError("Failed to delete user from API: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                logError("Error deleting user from API: " + t.getMessage());
+            }
+        });
     }
 
     /**

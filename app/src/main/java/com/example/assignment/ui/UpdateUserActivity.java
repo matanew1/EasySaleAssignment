@@ -144,13 +144,14 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
         String firstName = getTextFromLayout(firstNameLayout);
         String lastName = getTextFromLayout(lastNameLayout);
         String email = getTextFromLayout(emailLayout);
+        String avatarUrl = imageUri != null ? imageUri.toString() : "";
 
         clearErrors();
 
         boolean isValid = validateInput(firstName, lastName, email);
 
         if (isValid) {
-            updateUserEntity(firstName, lastName, email, imageUri != null ? imageUri.toString() : "");
+            updateUserEntity(firstName, lastName, email, avatarUrl);
             Log.d("UpdateUserActivity", "Updating user: " + currentUser.toString());
             userViewModel.updateUser(currentUser);
             Toast.makeText(this, "User updated successfully", Toast.LENGTH_SHORT).show();
