@@ -140,7 +140,7 @@
                         android:id="@+id/btn_submit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/update_user"
+                        android:text="@string/add_user"
                         android:textColor="@color/colorButtonText"
                         app:cornerRadius="8dp"
                         android:background="#6EB9C3" />

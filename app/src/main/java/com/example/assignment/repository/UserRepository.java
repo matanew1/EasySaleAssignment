@@ -88,6 +88,14 @@ public class UserRepository {
     }
 
     /**
+     * Fetches a user by email.
+     * @param email The email of the user to fetch.
+     * @return A LiveData object containing the UserEntity if found, null otherwise.
+     */
+    public LiveData<UserEntity> getUserByEmail(String email) {
+        return userDao.getUserByEmail(email);
+    }
+    /**
      * Delete a user from the local database.
      * @param user The user entity to be deleted.
      */

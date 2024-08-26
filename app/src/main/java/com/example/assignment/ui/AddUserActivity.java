@@ -145,11 +145,17 @@ public class AddUserActivity extends AppCompatActivity implements ILoadFragment,
         boolean isValid = validateInput(firstName, lastName, email);
 
         if (isValid) {
-            UserEntity user = createUserEntity(firstName, lastName, email);
-            userViewModel.addNewUser(user);
-            Toast.makeText(this, "User added successfully", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, GetAllUsersActivity.class);
-            startActivity(intent);
+            userViewModel.getUserByEmail(email).observe(this, user -> {
+                if (user != null) {
+                    Toast.makeText(this, "User with this email already exists", Toast.LENGTH_SHORT).show();
+                } else {
+                    UserEntity newUser = createUserEntity(firstName, lastName, email);
+                    userViewModel.addNewUser(newUser);
+                    Toast.makeText(this, "User added successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, GetAllUsersActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
     }
 

@@ -98,4 +98,13 @@ public class UserViewModel extends AndroidViewModel {
         });
         currentPage++;
     }
+
+    /**
+     * Checks if a user with the given email exists.
+     * @param email The email to check.
+     * @return A LiveData object containing the UserEntity if found, null otherwise.
+     */
+    public LiveData<UserEntity> getUserByEmail(String email) {
+        return repository.getUserByEmail(email);
+    }
 }

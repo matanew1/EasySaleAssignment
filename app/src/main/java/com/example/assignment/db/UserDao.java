@@ -45,8 +45,10 @@ public interface UserDao {
     LiveData<List<UserEntity>> getAllUsers(); // Returns a LiveData object containing a list of all UserEntity objects
 
     /**
-     * Delete all UserEntity objects from the user_table.
+     * Check if a user with the given email exists in the user_table.
+     * @param email The email of the user to check.
+     * @return The UserEntity object if found, null otherwise.
      */
-    @Query("DELETE FROM user_table")
-    void deleteAllUsers();
+    @Query("SELECT * FROM user_table WHERE email = :email LIMIT 1")
+    LiveData<UserEntity> getUserByEmail(String email);
 }
