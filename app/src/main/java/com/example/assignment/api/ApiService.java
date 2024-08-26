@@ -12,9 +12,8 @@ public interface ApiService {
     /**
      * Fetch users from the API.
      * @param page The page number for pagination.
-     * @param perPage The number of users per page.
      * @return A Retrofit Call object containing the API response.
      */
     @GET("api/users")
-    Call<UserResponse> getUsers(@Query("page") int page, @Query("per_page") int perPage);
+    Call<UserResponse> getUsers(@Query("page") int page);
 }

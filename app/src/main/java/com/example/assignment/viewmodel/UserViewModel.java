@@ -72,8 +72,7 @@ public class UserViewModel extends AndroidViewModel {
      */
     public void fetchUsersFromApi() {
         int currentPage = 1;
-        int totalPages = 100;
-        repository.fetchUsersFromApi(currentPage, totalPages);
+        repository.fetchUsersFromApi(currentPage);
     }
 
 }

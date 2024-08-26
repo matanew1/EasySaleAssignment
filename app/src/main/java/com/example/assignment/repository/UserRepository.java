@@ -75,10 +75,9 @@ public class UserRepository {
     /**
      * Fetch users from the API and insert them into the local database.
      * @param page The current page number for pagination.
-     * @param totalPages The total number of pages.
      */
-    public void fetchUsersFromApi(int page, int totalPages) {
-        apiService.getUsers(page, totalPages).enqueue(new Callback<UserResponse>() {
+    public void fetchUsersFromApi(int page) {
+        apiService.getUsers(page).enqueue(new Callback<UserResponse>() {
 
             @Override
             public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
