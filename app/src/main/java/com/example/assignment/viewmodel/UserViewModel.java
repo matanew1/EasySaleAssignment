@@ -107,4 +107,8 @@ public class UserViewModel extends AndroidViewModel {
     public LiveData<UserEntity> getUserByEmail(String email) {
         return repository.getUserByEmail(email);
     }
+
+    public boolean hasMoreData() {
+        return repository.hasMoreData();
+    }
 }

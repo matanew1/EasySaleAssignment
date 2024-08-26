@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/colorBackground"
     android:padding="16dp">
 
     <androidx.cardview.widget.CardView
@@ -17,6 +16,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         app:cardElevation="4dp"
+        android:backgroundTint="@color/colorPrimary"
         app:cardCornerRadius="12dp">
 
         <com.google.android.material.button.MaterialButton
@@ -41,6 +41,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         app:cardElevation="4dp"
+        android:backgroundTint="@color/colorPrimary"
         app:cardCornerRadius="12dp">
 
         <com.google.android.material.button.MaterialButton

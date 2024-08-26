@@ -24,6 +24,7 @@ public class UserRepository {
     private final UserDao userDao; // Database access object for user data
     private final ApiService apiService; // API service for making network requests
     private final ExecutorService executorService; // Executor service for background tasks
+    private boolean hasMoreData = true;
 
     /**
      * Constructor for the UserRepository class.
@@ -137,6 +138,9 @@ public class UserRepository {
                             // Notify the callback with fetched users
                             fetchUsersCallback.onUsersFetched(users);
                         });
+                        hasMoreData = true;
+                    } else {
+                        hasMoreData = false;
                     }
                 } else {
                     logError("Failed to fetch users: " + response.message());
@@ -150,6 +154,10 @@ public class UserRepository {
                 fetchUsersCallback.onUsersFetched(null); // Notify callback with null
             }
         });
+    }
+
+    public boolean hasMoreData() {
+        return hasMoreData;
     }
 
     // Callback interface for fetching users

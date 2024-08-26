@@ -84,7 +84,8 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
                 super.onScrolled(recyclerView, dx, dy);
                 int totalItemCount = layoutManager.getItemCount();
                 int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-                if (lastVisibleItem == totalItemCount - 1) {
+                if (userViewModel.hasMoreData() && lastVisibleItem == totalItemCount - 1 && dy > 0) {
+                    System.out.println("SSSSLOAD");
                     userViewModel.fetchUsersFromApi();
                 }
                 userViewModel.getAllUsers().observe(GetAllUsersActivity.this, users -> {
