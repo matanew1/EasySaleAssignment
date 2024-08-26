@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -76,6 +77,24 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
 
         adapter = new UserAdapter();
         recyclerView.setAdapter(adapter);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int totalItemCount = layoutManager.getItemCount();
+                int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+                if (lastVisibleItem == totalItemCount - 1) {
+                    userViewModel.fetchUsersFromApi();
+                }
+                userViewModel.getAllUsers().observe(GetAllUsersActivity.this, users -> {
+                    if (users != null) {
+                        allUsers = users;
+                        adapter.setUsers(allUsers);
+                    }
+                });
+            }
+        });
         setupAdapterListener();
     }
 

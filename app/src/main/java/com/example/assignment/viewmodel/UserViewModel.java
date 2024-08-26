@@ -16,6 +16,7 @@ import java.util.List;
 public class UserViewModel extends AndroidViewModel {
     private UserRepository repository;
     private MutableLiveData<List<UserEntity>> allUsers;
+    private int currentPage = 1;
 
     /**
      * Constructor for the UserViewModel.
@@ -89,12 +90,12 @@ public class UserViewModel extends AndroidViewModel {
      * Fetch users from the API and insert them into the database.
      */
     public void fetchUsersFromApi() {
-        int currentPage = 1; // Set the page number for API request
         repository.fetchUsersFromApi(currentPage, users -> {
             if (users != null && !users.isEmpty()) {
                 // Update LiveData with the newly fetched users
                 allUsers.postValue(users);
             }
         });
+        currentPage++;
     }
 }
