@@ -1,29 +1,29 @@
 package com.example.assignment.repository;
 
 import android.app.Application;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-
 import com.example.assignment.api.ApiClient;
 import com.example.assignment.api.ApiService;
 import com.example.assignment.api.UserResponse;
 import com.example.assignment.db.UserDao;
 import com.example.assignment.db.UserDatabase;
 import com.example.assignment.db.UserEntity;
-
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import java.util.List;
 
 /**
  * Repository class for managing user-related data operations.
  */
 public class UserRepository {
-    private UserDao userDao; // Database access object for user data
-    private ApiService apiService; // API service for making network requests
+
+    private final UserDao userDao; // Database access object for user data
+    private final ApiService apiService; // API service for making network requests
+    private final ExecutorService executorService; // Executor service for background tasks
 
     /**
      * Constructor for the UserRepository class.
@@ -35,6 +35,8 @@ public class UserRepository {
         userDao = db.userDao();
         // Initialize ApiService for network requests
         apiService = ApiClient.getApiService();
+        // Initialize ExecutorService for background operations
+        executorService = Executors.newFixedThreadPool(3);
     }
 
     /**
@@ -50,8 +52,7 @@ public class UserRepository {
      * @param user The user entity to be inserted.
      */
     public void insert(UserEntity user) {
-        // Runs the insert operation in a background thread
-        new Thread(() -> userDao.insert(user)).start();
+        executorService.execute(() -> userDao.insert(user));
     }
 
     /**
@@ -59,8 +60,7 @@ public class UserRepository {
      * @param user The user entity to be updated.
      */
     public void update(UserEntity user) {
-        // Runs the update operation in a background thread
-        new Thread(() -> userDao.update(user)).start();
+        executorService.execute(() -> userDao.update(user));
     }
 
     /**
@@ -68,38 +68,51 @@ public class UserRepository {
      * @param user The user entity to be deleted.
      */
     public void delete(UserEntity user) {
-        // Runs the delete operation in a background thread
-        new Thread(() -> userDao.delete(user)).start();
+        executorService.execute(() -> userDao.delete(user));
     }
 
     /**
      * Fetch users from the API and insert them into the local database.
      * @param page The current page number for pagination.
+     * @param fetchUsersCallback The callback to notify when users are fetched.
      */
-    public void fetchUsersFromApi(int page) {
+    public void fetchUsersFromApi(int page, FetchUsersCallback fetchUsersCallback) {
         apiService.getUsers(page).enqueue(new Callback<UserResponse>() {
-
             @Override
             public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<UserEntity> users = response.body().getData();
                     if (users != null && !users.isEmpty()) {
-                        for (UserEntity user : users) {
-                            insert(user);
-                        }
+                        // Insert users into the database
+                        executorService.execute(() -> {
+                            for (UserEntity user : users) {
+                                userDao.insert(user);
+                            }
+                            // Notify the callback with fetched users
+                            fetchUsersCallback.onUsersFetched(users);
+                        });
                     }
+                } else {
+                    logError("Failed to fetch users: " + response.message());
+                    fetchUsersCallback.onUsersFetched(null); // Notify callback with null
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {}
+            public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
+                logError("Error fetching users: " + t.getMessage());
+                fetchUsersCallback.onUsersFetched(null); // Notify callback with null
+            }
         });
     }
 
-    /**
-     * Delete all users from the local database.
-     */
-    public void deleteAllUsers() {
-        new Thread(() -> userDao.deleteAllUsers()).start();
+    // Callback interface for fetching users
+    public interface FetchUsersCallback {
+        void onUsersFetched(List<UserEntity> users);
+    }
+
+    // Log errors (could be extended to use a logging framework)
+    private void logError(String message) {
+        System.err.println(message); // Simple logging to standard error
     }
 }

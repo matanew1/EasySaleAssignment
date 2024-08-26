@@ -1,7 +1,13 @@
 package com.example.assignment.api;
 
+import com.example.assignment.db.UserEntity;
+
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -16,4 +22,10 @@ public interface ApiService {
      */
     @GET("api/users")
     Call<UserResponse> getUsers(@Query("page") int page);
+
+    @POST("api/users")
+    Call<UserEntity> addUser(@Body UserEntity user);
+
+    @PUT("api/users/{id}")
+    Call<UserEntity> updateUser(@Path("id") int id, @Body UserEntity user);
 }

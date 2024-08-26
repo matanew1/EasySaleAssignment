@@ -1,11 +1,10 @@
 package com.example.assignment.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import com.example.assignment.db.UserEntity;
 import com.example.assignment.repository.UserRepository;
 
@@ -16,7 +15,7 @@ import java.util.List;
  */
 public class UserViewModel extends AndroidViewModel {
     private UserRepository repository;
-    private LiveData<List<UserEntity>> allUsers;
+    private MutableLiveData<List<UserEntity>> allUsers;
 
     /**
      * Constructor for the UserViewModel.
@@ -25,7 +24,8 @@ public class UserViewModel extends AndroidViewModel {
     public UserViewModel(@NonNull Application application) {
         super(application); // Call the constructor of the superclass (AndroidViewModel)
         repository = new UserRepository(application); // Initialize the UserRepository
-        allUsers = repository.getAllUsers(); // Retrieve all users from the repository and assign to LiveData
+        allUsers = new MutableLiveData<>();
+        loadUsers(); // Load users initially
     }
 
     /**
@@ -37,11 +37,29 @@ public class UserViewModel extends AndroidViewModel {
     }
 
     /**
-     * Delete all users from the database.
+     * Load users from the database and fetch them from the API if necessary.
      */
-    public void deleteAllUsers() {
-        repository.deleteAllUsers();
+    private void loadUsers() {
+        // Observe changes in user data from the repository
+        repository.getAllUsers().observeForever(users -> {
+            if (users != null) {
+                if (users.isEmpty()) {
+                    // Fetch users from the API if the database is empty
+                    fetchUsersFromApi();
+                } else {
+                    // Update LiveData with users from the database
+                    allUsers.postValue(users);
+                }
+            }
+        });
     }
+
+//    /**
+//     * Delete all users from the database.
+//     */
+//    public void deleteAllUsers() {
+//        repository.deleteAllUsers();
+//    }
 
     /**
      * Add a new user to the database.
@@ -71,8 +89,12 @@ public class UserViewModel extends AndroidViewModel {
      * Fetch users from the API and insert them into the database.
      */
     public void fetchUsersFromApi() {
-        int currentPage = 1;
-        repository.fetchUsersFromApi(currentPage);
+        int currentPage = 1; // Set the page number for API request
+        repository.fetchUsersFromApi(currentPage, users -> {
+            if (users != null && !users.isEmpty()) {
+                // Update LiveData with the newly fetched users
+                allUsers.postValue(users);
+            }
+        });
     }
-
 }

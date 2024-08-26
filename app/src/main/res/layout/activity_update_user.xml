@@ -1,7 +1,5 @@
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
@@ -24,40 +22,11 @@
             android:gravity="center"
             android:padding="8dp"/>
 
-        <!-- Dropdown Menu -->
-        <LinearLayout
-            android:id="@+id/dropdown_menu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/title_text"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <!-- Title above Spinner -->
-            <TextView
-                android:id="@+id/choose_user_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Choose User"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                tools:ignore="HardcodedText" />
-
-            <Spinner
-                android:id="@+id/user_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                android:textColor="@android:color/white"
-                android:padding="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"/>
-        </LinearLayout>
 
         <!-- Avatar ImageView -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/avatar_frame"
-            android:layout_below="@+id/dropdown_menu"
+            android:layout_below="@+id/title_text"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginBottom="8dp"

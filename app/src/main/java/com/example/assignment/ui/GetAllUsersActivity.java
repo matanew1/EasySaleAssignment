@@ -1,5 +1,6 @@
 package com.example.assignment.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -54,13 +55,12 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
      */
     private void initializeViewModel() {
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+
+         // Observe changes in user data
         userViewModel.getAllUsers().observe(this, users -> {
             if (users != null) {
-                allUsers = new ArrayList<>(users);
-                adapter.setUsers(allUsers);
-                if (users.isEmpty()) {
-                    userViewModel.fetchUsersFromApi();
-                }
+                allUsers = users; // Update local list
+                adapter.setUsers(allUsers); // Update adapter
             }
         });
     }
@@ -80,15 +80,16 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
     }
 
     /**
-     * Sets up the adapter listener for handling user deletion.
+     * Sets up the adapter listener for handling user clicks.
      */
     private void setupAdapterListener() {
-        adapter.setDeleteListener(position -> {
+        adapter.setItemClickListener(position -> {
             UserEntity user = adapter.getUserAtPosition(position);
-            userViewModel.deleteUser(user);
+            Intent intent = new Intent(this, UpdateUserActivity.class);
+            intent.putExtra("user", user);
+            startActivity(intent);
         });
     }
-
 
     /**
      * Sets up the search functionality for filtering user data.
@@ -114,7 +115,6 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
      * @param query The search query.
      */
     private void filterUsers(String query) {
-        // Filter the users based on the query
         List<UserEntity> filteredUsers = allUsers.stream()
                 .filter(user -> user.getFirstName().toLowerCase().contains(query.toLowerCase()) ||
                         user.getLastName().toLowerCase().contains(query.toLowerCase()) ||

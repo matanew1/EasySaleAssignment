@@ -45,7 +45,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/search_layout"
-        android:layout_above="@id/action_menu_view"
         android:layout_margin="8dp"
         tools:listitem="@layout/user_item" />
 

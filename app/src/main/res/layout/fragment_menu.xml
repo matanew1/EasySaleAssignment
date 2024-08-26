@@ -46,23 +46,4 @@
             android:background="#6EB9C3"/>
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_margin="4dp"
-        app:cardElevation="4dp"
-        app:cardCornerRadius="8dp">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_update_user"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/update_user"
-            android:textColor="@color/colorButtonText"
-            android:padding="16dp"
-            app:cornerRadius="8dp"
-            android:background="#6EB9C3" />
-    </androidx.cardview.widget.CardView>
-
 </LinearLayout>
