@@ -144,7 +144,9 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
         String firstName = getTextFromLayout(firstNameLayout);
         String lastName = getTextFromLayout(lastNameLayout);
         String email = getTextFromLayout(emailLayout);
-        String avatarUrl = imageUri != null ? imageUri.toString() : "";
+
+        // Use existing avatar URL if no new image is selected
+        String avatarUrl = imageUri != null ? imageUri.toString() : currentUser.getAvatar();
 
         clearErrors();
 
@@ -159,6 +161,7 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
             startActivity(intent);
         }
     }
+
 
     @NonNull
     private String getTextFromLayout(@NonNull TextInputLayout layout) {
