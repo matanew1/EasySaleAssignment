@@ -13,12 +13,15 @@ import java.io.Serializable;
 public class UserEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int id;
     private String email;
     private String first_name;
     private String last_name;
     private String avatar;
+    private String updatedAt;
+    private String createdAt;
+
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -42,7 +45,18 @@ public class UserEntity implements Serializable {
     public void setLast_name(String last_name) {
         this.last_name = last_name;
     }
-
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+    public String getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
 
     /**
      * Converts the UserEntity object to a string representation.
@@ -57,6 +71,8 @@ public class UserEntity implements Serializable {
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", avatar='" + avatar + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                ", createdAt='" + createdAt + '\'' +
                 '}';
     }
 }

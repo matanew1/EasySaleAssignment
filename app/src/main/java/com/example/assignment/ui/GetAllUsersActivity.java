@@ -22,21 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Activity to display all users.
- */
 public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragment {
     private UserViewModel userViewModel;
     private UserAdapter adapter;
     private List<UserEntity> allUsers = new ArrayList<>();
 
-    /**
-     * Called when the activity is first created.
-     * @param savedInstanceState If the activity is being re-initialized after
-     *     previously being shut down then this Bundle contains the data it most
-     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
-     *
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,24 +41,17 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
         }
     }
 
-    /**
-     * Initializes the ViewModel for handling user data.
-     */
     private void initializeViewModel() {
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
-         // Observe changes in user data
         userViewModel.getAllUsers().observe(this, users -> {
             if (users != null) {
-                allUsers = users; // Update local list
-                adapter.setUsers(allUsers); // Update adapter
+                allUsers = users;
+                adapter.setUsers(allUsers);
             }
         });
     }
 
-    /**
-     * Sets up the RecyclerView for displaying user data.
-     */
     private void setupRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -84,24 +67,15 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
                 super.onScrolled(recyclerView, dx, dy);
                 int totalItemCount = layoutManager.getItemCount();
                 int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+
                 if (userViewModel.hasMoreData() && lastVisibleItem == totalItemCount - 1 && dy > 0) {
-                    System.out.println("SSSSLOAD");
                     userViewModel.fetchUsersFromApi();
                 }
-                userViewModel.getAllUsers().observe(GetAllUsersActivity.this, users -> {
-                    if (users != null) {
-                        allUsers = users;
-                        adapter.setUsers(allUsers);
-                    }
-                });
             }
         });
         setupAdapterListener();
     }
 
-    /**
-     * Sets up the adapter listener for handling user clicks.
-     */
     private void setupAdapterListener() {
         adapter.setItemClickListener(position -> {
             UserEntity user = adapter.getUserAtPosition(position);
@@ -111,9 +85,6 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
         });
     }
 
-    /**
-     * Sets up the search functionality for filtering user data.
-     */
     private void setupSearch() {
         TextInputEditText searchBar = findViewById(R.id.search_bar);
         searchBar.addTextChangedListener(new TextWatcher() {
@@ -130,10 +101,6 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
         });
     }
 
-    /**
-     * Filters the user data based on the given query.
-     * @param query The search query.
-     */
     private void filterUsers(String query) {
         List<UserEntity> filteredUsers = allUsers.stream()
                 .filter(user -> user.getFirstName().toLowerCase().contains(query.toLowerCase()) ||
@@ -143,10 +110,6 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
         adapter.setUsers(filteredUsers);
     }
 
-    /**
-     * Loads a fragment into the specified container.
-     * @param fragment The fragment to load.
-     */
     @Override
     public void loadFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()

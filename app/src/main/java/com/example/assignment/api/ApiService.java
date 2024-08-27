@@ -22,7 +22,7 @@ public interface ApiService {
      * @return A Retrofit Call object containing the API response.
      */
     @GET("api/users")
-    Call<UserResponse> getUsers(@Query("page") int page);
+    Call<UserResponse> getUsers(@Query("page") int page, @Query("per_page") int perPage);
 
     @POST("api/users")
     Call<UserEntity> addUser(@Body UserEntity user);

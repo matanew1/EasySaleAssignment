@@ -14,9 +14,11 @@ import java.util.List;
  * ViewModel class for managing user data in the application.
  */
 public class UserViewModel extends AndroidViewModel {
-    private UserRepository repository;
-    private MutableLiveData<List<UserEntity>> allUsers;
+    private final UserRepository repository;
+    private final MutableLiveData<List<UserEntity>> allUsers;
     private int currentPage = 1;
+    private final int pageSize = 10;
+    private boolean hasMoreData = true;
 
     /**
      * Constructor for the UserViewModel.
@@ -55,13 +57,6 @@ public class UserViewModel extends AndroidViewModel {
         });
     }
 
-//    /**
-//     * Delete all users from the database.
-//     */
-//    public void deleteAllUsers() {
-//        repository.deleteAllUsers();
-//    }
-
     /**
      * Add a new user to the database.
      * @param user The user entity to be added.
@@ -90,12 +85,20 @@ public class UserViewModel extends AndroidViewModel {
      * Fetch users from the API and insert them into the database.
      */
     public void fetchUsersFromApi() {
-        repository.fetchUsersFromApi(currentPage, users -> {
-            if (users != null && !users.isEmpty()) {
-                // Update LiveData with the newly fetched users
-                allUsers.postValue(users);
-            }
-        });
+        if (hasMoreData) {
+            hasMoreData = repository.fetchUsersFromApi(currentPage, pageSize, users -> {
+                if (users != null && !users.isEmpty()) {
+                    allUsers.postValue(users);
+                    incrementPage();
+                } else {
+                    hasMoreData = false; // Stop further loading when no more data is available
+                    currentPage = 1;
+                }
+            });
+        }
+    }
+
+    private synchronized void incrementPage() {
         currentPage++;
     }
 
@@ -109,6 +112,6 @@ public class UserViewModel extends AndroidViewModel {
     }
 
     public boolean hasMoreData() {
-        return repository.hasMoreData();
+        return hasMoreData;
     }
 }

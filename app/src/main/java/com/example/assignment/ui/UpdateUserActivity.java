@@ -29,6 +29,8 @@ import com.example.assignment.utils.ValidationHelper;
 import com.example.assignment.viewmodel.UserViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Date;
+
 public class UpdateUserActivity extends AppCompatActivity implements ILoadFragment, ImagePickerHelper.ImageSelectionListener, ImagePickerHelper.GalleryLauncherProvider {
 
     private ImageView avatarImageView;

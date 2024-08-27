@@ -51,4 +51,7 @@ public interface UserDao {
      */
     @Query("SELECT * FROM user_table WHERE email = :email LIMIT 1")
     LiveData<UserEntity> getUserByEmail(String email);
+
+    @Query("SELECT * FROM user_table WHERE email = :email LIMIT 1")
+    UserEntity getUserByEmailSync(String email);
 }

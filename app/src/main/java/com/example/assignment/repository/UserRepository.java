@@ -1,6 +1,7 @@
 package com.example.assignment.repository;
 
 import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import com.example.assignment.api.ApiClient;
@@ -122,21 +123,24 @@ public class UserRepository {
      * Fetch users from the API and insert them into the local database.
      * @param page The current page number for pagination.
      * @param fetchUsersCallback The callback to notify when users are fetched.
+     * @return boolean indicating if there is more data to fetch.
      */
-    public void fetchUsersFromApi(int page, FetchUsersCallback fetchUsersCallback) {
-        apiService.getUsers(page).enqueue(new Callback<UserResponse>() {
+    public boolean fetchUsersFromApi(int page, int pageSize,  FetchUsersCallback fetchUsersCallback) {
+        apiService.getUsers(page, pageSize).enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<UserEntity> users = response.body().getData();
-                    if (users != null && !users.isEmpty()) {
-                        // Insert users into the database
+                    List<UserEntity> usersRes = response.body().getData();
+                    if (usersRes != null && !usersRes.isEmpty()) {
+                        // Insert usersRes into the database
                         executorService.execute(() -> {
-                            for (UserEntity user : users) {
-                                userDao.insert(user);
+                            for (UserEntity user : usersRes) {
+                                if (!currentUserUpdated(user)) {
+                                    userDao.insert(user);
+                                }
                             }
-                            // Notify the callback with fetched users
-                            fetchUsersCallback.onUsersFetched(users);
+                            // Notify the callback with fetched usersRes
+                            fetchUsersCallback.onUsersFetched(usersRes);
                         });
                         hasMoreData = true;
                     } else {
@@ -152,13 +156,26 @@ public class UserRepository {
             public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
                 logError("Error fetching users: " + t.getMessage());
                 fetchUsersCallback.onUsersFetched(null); // Notify callback with null
+                hasMoreData = false; // Assume no more data if the request fails
             }
         });
-    }
 
-    public boolean hasMoreData() {
         return hasMoreData;
     }
+
+    private boolean currentUserUpdated(@NonNull UserEntity userRes) {
+        UserEntity currentUser = userDao.getUserByEmailSync(userRes.getEmail());
+        boolean updated = false;
+        if (currentUser != null) {
+            if (currentUser.getUpdatedAt() != null) {
+                updated = true;
+            }
+        }
+        return updated;
+    }
+
+
+
 
     // Callback interface for fetching users
     public interface FetchUsersCallback {
