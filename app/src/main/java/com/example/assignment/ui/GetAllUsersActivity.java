@@ -16,6 +16,7 @@ import com.example.assignment.R;
 import com.example.assignment.db.UserEntity;
 import com.example.assignment.utils.ILoadFragment;
 import com.example.assignment.viewmodel.UserViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_all_users);
 
+        setupRefreshButton();
         initializeViewModel();
         setupRecyclerView();
         setupSearch();
@@ -39,6 +41,11 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
         if (savedInstanceState == null) {
             loadFragment(new MenuFragment());
         }
+    }
+
+    private void setupRefreshButton() {
+        FloatingActionButton refreshButton = findViewById(R.id.refresh_button);
+        refreshButton.setOnClickListener(v -> userViewModel.fetchUsersFromApiIgnoreDeleted());
     }
 
     private void initializeViewModel() {
@@ -79,7 +86,7 @@ public class GetAllUsersActivity extends AppCompatActivity implements ILoadFragm
     private void setupAdapterListener() {
         adapter.setItemClickListener(position -> {
             UserEntity user = adapter.getUserAtPosition(position);
-            Intent intent = new Intent(this, UpdateUserActivity.class);
+            Intent intent = new Intent(this, EditOrDeleteUserActivity.class);
             intent.putExtra("user", user);
             startActivity(intent);
         });

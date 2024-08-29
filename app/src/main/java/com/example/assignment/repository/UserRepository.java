@@ -7,9 +7,13 @@ import androidx.lifecycle.LiveData;
 import com.example.assignment.api.ApiClient;
 import com.example.assignment.api.ApiService;
 import com.example.assignment.api.UserResponse;
+import com.example.assignment.db.DeletedUserDao;
+import com.example.assignment.db.DeletedUserEntity;
 import com.example.assignment.db.UserDao;
 import com.example.assignment.db.UserDatabase;
 import com.example.assignment.db.UserEntity;
+
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,6 +27,7 @@ import retrofit2.Response;
 public class UserRepository {
 
     private final UserDao userDao; // Database access object for user data
+    private final DeletedUserDao deletedUserDao; // Database access object for deleted user data
     private final ApiService apiService; // API service for making network requests
     private final ExecutorService executorService; // Executor service for background tasks
     private boolean hasMoreData = true;
@@ -35,6 +40,7 @@ public class UserRepository {
         // Get the instance of the Room database and initialize UserDao
         UserDatabase db = UserDatabase.getDatabase(application);
         userDao = db.userDao();
+        deletedUserDao = db.deletedUserDao();
         // Initialize ApiService for network requests
         apiService = ApiClient.getApiService();
         // Initialize ExecutorService for background operations
@@ -56,7 +62,7 @@ public class UserRepository {
     public void insert(UserEntity user) {
         apiService.addUser(user).enqueue(new Callback<UserEntity>() {
             @Override
-            public void onResponse(Call<UserEntity> call, Response<UserEntity> response) {
+            public void onResponse(@NonNull Call<UserEntity> call, @NonNull Response<UserEntity> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     executorService.execute(() -> userDao.insert(response.body()));
                 }
@@ -107,6 +113,11 @@ public class UserRepository {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     executorService.execute(() -> userDao.delete(user));
+                    DeletedUserEntity deletedUser = new DeletedUserEntity();
+                    deletedUser.setUserName(user.getFirstName() + " " + user.getLastName());
+                    deletedUser.setEmail(user.getEmail());
+                    deletedUser.setDeletedAt(String.valueOf(new Date()));
+                    executorService.execute(() -> deletedUserDao.insert(deletedUser));
                 } else {
                     logError("Failed to delete user from API: " + response.message());
                 }
@@ -135,7 +146,7 @@ public class UserRepository {
                         // Insert usersRes into the database
                         executorService.execute(() -> {
                             for (UserEntity user : usersRes) {
-                                if (!currentUserUpdated(user)) {
+                                if (!currentUserUpdated(user) && isNotDeleted(user)) {
                                     userDao.insert(user);
                                 }
                             }
@@ -163,6 +174,16 @@ public class UserRepository {
         return hasMoreData;
     }
 
+    private boolean isNotDeleted(UserEntity user) {
+        List<DeletedUserEntity> deletedUsers = deletedUserDao.getAllDeletedUsers();
+        for (DeletedUserEntity deletedUser : deletedUsers) {
+            if (deletedUser.getEmail().equals(user.getEmail())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private boolean currentUserUpdated(@NonNull UserEntity userRes) {
         UserEntity currentUser = userDao.getUserByEmailSync(userRes.getEmail());
         boolean updated = false;
@@ -172,6 +193,10 @@ public class UserRepository {
             }
         }
         return updated;
+    }
+
+    public void clearDeletedUsers() {
+        executorService.execute(deletedUserDao::deleteAll);
     }
 
 

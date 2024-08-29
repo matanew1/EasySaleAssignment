@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase;
  * Database class for the UserEntity.
  * @see UserEntity
  */
-@Database(entities = {UserEntity.class}, version = 1)
+@Database(entities = {UserEntity.class, DeletedUserEntity.class}, version = 2)
 public abstract class UserDatabase extends RoomDatabase {
 
     // Volatile variable to ensure visibility of changes to the INSTANCE variable across threads
@@ -39,4 +39,10 @@ public abstract class UserDatabase extends RoomDatabase {
      * @return The DAO for the UserEntity.
      */
     public abstract UserDao userDao();
+
+    /**
+     * Get the DAO for the DeletedUser.
+     * @return The DAO for the DeletedUser.
+     */
+    public abstract DeletedUserDao deletedUserDao();
 }

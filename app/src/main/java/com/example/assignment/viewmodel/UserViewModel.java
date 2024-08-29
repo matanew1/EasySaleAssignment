@@ -17,7 +17,6 @@ public class UserViewModel extends AndroidViewModel {
     private final UserRepository repository;
     private final MutableLiveData<List<UserEntity>> allUsers;
     private int currentPage = 1;
-    private final int pageSize = 10;
     private boolean hasMoreData = true;
 
     /**
@@ -86,6 +85,7 @@ public class UserViewModel extends AndroidViewModel {
      */
     public void fetchUsersFromApi() {
         if (hasMoreData) {
+            int pageSize = 10;
             hasMoreData = repository.fetchUsersFromApi(currentPage, pageSize, users -> {
                 if (users != null && !users.isEmpty()) {
                     allUsers.postValue(users);
@@ -113,5 +113,12 @@ public class UserViewModel extends AndroidViewModel {
 
     public boolean hasMoreData() {
         return hasMoreData;
+    }
+
+    public void fetchUsersFromApiIgnoreDeleted() {
+        repository.clearDeletedUsers();
+        currentPage = 1;
+        hasMoreData = true;
+        fetchUsersFromApi();
     }
 }

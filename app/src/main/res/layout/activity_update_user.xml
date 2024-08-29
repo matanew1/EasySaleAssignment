@@ -22,7 +22,6 @@
             android:gravity="center"
             android:padding="8dp"/>
 
-
         <!-- Avatar ImageView -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/avatar_frame"
@@ -35,6 +34,7 @@
             app:cardElevation="4dp">
 
             <FrameLayout
+                android:id="@+id/avatar_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp">
@@ -63,6 +63,16 @@
                     android:layout_gravity="center"
                     android:indeterminate="true"
                     android:visibility="gone"/>
+
+                <!-- Transparent overlay to block interactions -->
+                <View
+                    android:id="@+id/overlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
             </FrameLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -151,14 +161,12 @@
                         android:background="#6EB9C3" />
                 </androidx.cardview.widget.CardView>
 
-
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:cardElevation="4dp"
                     android:layout_margin="2dp"
-
                     app:cardCornerRadius="8dp">
 
                     <com.google.android.material.button.MaterialButton

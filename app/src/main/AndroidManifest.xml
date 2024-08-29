@@ -33,7 +33,7 @@
 
         <!-- Activity to update a user -->
         <activity
-            android:name=".ui.UpdateUserActivity"
+            android:name=".ui.EditOrDeleteUserActivity"
             android:exported="true" />
 
     </application>

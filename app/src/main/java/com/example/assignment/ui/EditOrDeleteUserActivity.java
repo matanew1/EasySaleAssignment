@@ -8,6 +8,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,9 +31,7 @@ import com.example.assignment.utils.ValidationHelper;
 import com.example.assignment.viewmodel.UserViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.Date;
-
-public class UpdateUserActivity extends AppCompatActivity implements ILoadFragment, ImagePickerHelper.ImageSelectionListener, ImagePickerHelper.GalleryLauncherProvider {
+public class EditOrDeleteUserActivity extends AppCompatActivity implements ILoadFragment, ImagePickerHelper.ImageSelectionListener, ImagePickerHelper.GalleryLauncherProvider {
 
     private ImageView avatarImageView;
     private Uri imageUri;
@@ -41,6 +40,7 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
     private TextInputLayout firstNameLayout;
     private TextInputLayout lastNameLayout;
     private TextInputLayout emailLayout;
+    private View overlay;
     private ProgressBar imageLoadingProgress;
     private ActivityResultLauncher<PickVisualMediaRequest> launcher;
     private UserEntity currentUser;
@@ -53,7 +53,7 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
         // Initialize launcher for gallery selection
         launcher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
             if (uri == null) {
-                Toast.makeText(UpdateUserActivity.this, "No image Selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditOrDeleteUserActivity.this, "No image Selected", Toast.LENGTH_SHORT).show();
             } else {
                 ImageLoader.loadImage(this, uri, avatarImageView);
                 imageUri = uri;
@@ -88,6 +88,7 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
         firstNameLayout = findViewById(R.id.first_name_layout);
         lastNameLayout = findViewById(R.id.last_name_layout);
         emailLayout = findViewById(R.id.email_layout);
+        overlay = findViewById(R.id.overlay);
     }
 
     private void setupViewModel() {
@@ -117,6 +118,11 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
             firstNameLayout.setFocusable(true);
             lastNameLayout.setFocusable(true);
             emailLayout.setFocusable(true);
+
+            // enable avatar and container clickable
+            overlay.setClickable(false);
+            overlay.setFocusable(false);
+            overlay.setFocusableInTouchMode(false);
         } else {
             editSaveButton.setText("Edit user");
             firstNameLayout.setEnabled(false);
@@ -169,7 +175,7 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
 
     @Override
     public void onError(@NonNull String errorMessage) {
-        Log.e("UpdateUserActivity", "Error: " + errorMessage);
+        Log.e("EditOrDeleteUserActivity", "Error: " + errorMessage);
     }
 
     private void validateAndSubmitUser() {
@@ -186,7 +192,7 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
 
         if (isValid) {
             updateUserEntity(firstName, lastName, email, avatarUrl);
-            Log.d("UpdateUserActivity", "Updating user: " + currentUser.toString());
+            Log.d("EditOrDeleteUserActivity", "Updating user: " + currentUser.toString());
             userViewModel.updateUser(currentUser);
             Toast.makeText(this, "User updated successfully", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, GetAllUsersActivity.class);
