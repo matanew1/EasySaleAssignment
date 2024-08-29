@@ -18,4 +18,5 @@
     <string name="cancel">Cancel</string>
     <string name="full_name">Full name</string>
     <string name="click_to_update">Click to update/delete</string>
+    <string name="edit_save">Edit user</string>
 </resources>

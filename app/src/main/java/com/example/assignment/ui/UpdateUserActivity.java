@@ -1,5 +1,6 @@
 package com.example.assignment.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -96,14 +97,33 @@ public class UpdateUserActivity extends AppCompatActivity implements ILoadFragme
     private void setListeners() {
         avatarImageView.setOnClickListener(v -> ImagePickerHelper.openImagePicker(this, this));
 
-        Button submitButton = findViewById(R.id.btn_submit);
-        submitButton.setOnClickListener(v -> validateAndSubmitUser());
+        Button editSaveButton = findViewById(R.id.edit_save_btn);
+        editSaveButton.setOnClickListener(v -> EditOrSaveState(editSaveButton));
 
         Button cancelButton = findViewById(R.id.btn_cancel);
         cancelButton.setOnClickListener(v -> finish());
 
         Button deleteButton = findViewById(R.id.btn_delete);
         deleteButton.setOnClickListener(v -> deleteUser());
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void EditOrSaveState(@NonNull Button editSaveButton) {
+        if (editSaveButton.getText().toString().equals("Edit user")) {
+            editSaveButton.setText("Save user");
+            firstNameLayout.setEnabled(true);
+            lastNameLayout.setEnabled(true);
+            emailLayout.setEnabled(true);
+            firstNameLayout.setFocusable(true);
+            lastNameLayout.setFocusable(true);
+            emailLayout.setFocusable(true);
+        } else {
+            editSaveButton.setText("Edit user");
+            firstNameLayout.setEnabled(false);
+            lastNameLayout.setEnabled(false);
+            emailLayout.setEnabled(false);
+            validateAndSubmitUser();
+        }
     }
 
     private void deleteUser() {

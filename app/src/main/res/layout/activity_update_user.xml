@@ -80,6 +80,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:layout_marginBottom="8dp"
+                android:enabled="false"
                 app:hintTextColor="@color/colorPrimaryVariant">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -97,6 +98,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:layout_marginBottom="8dp"
+                android:enabled="false"
                 app:hintTextColor="@color/colorPrimaryVariant">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -114,6 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:textColor="@android:color/black"
+                android:enabled="false"
                 app:hintTextColor="@color/colorHint">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -139,14 +142,15 @@
                     app:cardCornerRadius="8dp">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_submit"
+                        android:id="@+id/edit_save_btn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/update_user"
+                        android:text="@string/edit_save"
                         android:textColor="@color/colorButtonText"
                         app:cornerRadius="8dp"
                         android:background="#6EB9C3" />
                 </androidx.cardview.widget.CardView>
+
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
